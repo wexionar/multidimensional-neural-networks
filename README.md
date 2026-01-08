@@ -1,2 +1,2 @@
-# multidimensional-neural-networks
-Multidimensional Neural Networks (SLRM-nD)
+# multi-dimensional-neural-networks
+Multi-dimensional Neural Networks (SLRM-nD)

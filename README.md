@@ -1,22 +1,19 @@
 # Segmented Linear Regression Model for Multi-dimensional Neural Networks (SLRM-nD)
 
-# SLRM-nD (Nexus Core)
-
 **Version:** 1.2 (Stable)  
 **Developers:** Alex & Gemini  
 **License:** MIT License
 
-## Overview
-**SLRM-nD** is a high-performance, universal geometric prediction engine designed to solve **N-Dimensional** problems through recursive neighborhood folding. Unlike traditional neural networks, SLRM-nD requires no training time; it uses **Segmented Multidimensional Linear Regression** logic to provide exact answers based on real data points.
+## Part A: Nexus Core (Precision Engine)
 
-## Key Features
-* **Absolute Precision:** 0.0 error rate in linear systems.
-* **Ultra-Lightweight:** Optimized for mobile hardware and low-resource environments.
-* **Nexus Engine:** A recursive algorithm that navigates hyperspace efficiently.
-* **Data Shield (v1.2):** Automatic handling of Null values (NaN), duplicates, and sparse data sectors (Alex's Constant Rule).
-* **Natural Extrapolation:** Predicts trends beyond the dataset boundaries using edge slopes.
+**Overview:** SLRM-nD Nexus is a high-performance engine designed to solve **N-Dimensional** problems through recursive neighborhood folding. It uses Segmented Multidimensional Linear Regression to provide exact answers based on real data points without training time.
 
-## Quick Start
+### Key Features (Nexus)
+* **Absolute Precision:** 0.0 error rate in structured linear systems.
+* **Ultra-Lightweight:** Optimized for low-resource environments.
+* **Data Shield (v1.2):** Handles Nulls (NaN), duplicates, and sparse sectors (Alex's Constant Rule).
+
+### Quick Start (Nexus)
 ```python
 from slrm_nexus import SLRMNexus
 import numpy as np
@@ -24,23 +21,51 @@ import numpy as np
 # Initialize for 10 dimensions
 model = SLRMNexus(dimensions=10)
 
-# Example dataset [Dim0, Dim1, ... DimN, Y_Output]
-data = np.array([
-    [0, 0, 10],
-    [1, 1, 20],
-    [0.5, 0.5, 15]
-])
-
 # Clean and load data
-model.fit(data)
+# model.fit(your_data)
 
-# Predict a point in space
-result = model.predict([0.7, 0.7])
-print(f"Prediction: {result}")
+# Predict a point
+# result = model.predict(your_point)
 ```
 
-## How it Works
-The engine uses a process called **Dimensional Folding**. It recursively reduces an N-dimensional problem into a series of 1D linear segments, "folding" the space until it reaches the final scalar value. If a dimension lacks sufficient data, it applies the **Constant Logic** to maintain stability.
+## Part B: Lumin Core (High-Dimension Engine)
+
+**Overview:** Lumin is the "brute force" evolution of the SLRM logic for High-Dimensional Neural Networks. It is specialized in performance (1000D+) and extremely sparse datasets, using Axis-Anchoring and Security Boundaries.
+
+### Millennium Benchmark (1000D)
+```text
+Launching Millennium Test (Lumin v1.2) in 1000D...
+Lumin Core v1.2: 1500 points loaded and purified.
+--------------------------------------------------
+HYPERSPACE STATISTICS (1000D)
+REAL VALUE: 334.674728
+PREDICTION: 333.324631
+ABS ERROR:  1.350097 
+TIME:       194.94 ms
+--------------------------------------------------
+```
+
+### Quick Start (Lumin)
+```python
+from slrm_lumin import SLRMLumin
+import numpy as np
+
+# Initialize for 1000 dimensions
+model = SLRMLumin(dimensions=1000)
+
+# Load data and Predict
+# model.fit(data_1000d)
+# result = model.predict(point_1000d)
+```
+
+## Part C: Technical Observations & Comparison
+
+### Nexus vs. Lumin: Which one to use?
+* **Use Nexus** when you have a dense, well-structured dataset and you need mathematical perfection (0.0 error in linear trends). It is the "Master of Folding".
+* **Use Lumin** when dealing with "The Curse of Dimensionality" in AI. If you have more than 50-100 dimensions or very sparse data, Lumin's Security Boundary will provide stable results where traditional networks struggle.
+
+### General Performance
+Both engines are built on top of NumPy, ensuring high-speed matrix operations. They do not require GPUs or heavy training cycles, making them the perfect lightweight alternative to traditional Deep Learning for specific regression tasks.
 
 ---
-*Developed in the nd-lab for the global developer community.*
+*Developed for the global developer community. Bridging the gap between geometric logic and high-dimensional Neural Networks.*

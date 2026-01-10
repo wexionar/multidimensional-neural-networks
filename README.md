@@ -37,3 +37,10 @@ model.fit(data)
 # Predict a point in space
 result = model.predict([0.7, 0.7])
 print(f"Prediction: {result}")
+```
+
+## How it Works
+The engine uses a process called **Dimensional Folding**. It recursively reduces an N-dimensional problem into a series of 1D linear segments, "folding" the space until it reaches the final scalar value. If a dimension lacks sufficient data, it applies the **Constant Logic** to maintain stability.
+
+---
+*Developed in the nd-lab for the global developer community.*

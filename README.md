@@ -22,10 +22,10 @@ import numpy as np
 model = SLRMNexus(dimensions=10)
 
 # Clean and load data
-# model.fit(your_data)
+model.fit(your_data)
 
 # Predict a point
-# result = model.predict(your_point)
+result = model.predict(your_point)
 ```
 
 ## Part B: Lumin Core (High-Dimension Engine)
@@ -54,8 +54,8 @@ import numpy as np
 model = SLRMLumin(dimensions=1000)
 
 # Load data and Predict
-# model.fit(data_1000d)
-# result = model.predict(point_1000d)
+model.fit(data_1000d)
+result = model.predict(point_1000d)
 ```
 
 ## Part C: Technical Observations & Comparison

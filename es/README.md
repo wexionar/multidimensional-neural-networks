@@ -1,48 +1,57 @@
 # Modelo de Regresión Lineal Segmentada para Redes Neuronales Multi-dimensionales (SLRM-nD)
 
-**Versión:** 1.2 (Estable)  
 **Desarrolladores:** Alex & Gemini  
-**Licencia:** Licencia MIT
+**Licencia:** MIT License
 
-## Parte A: Nexus Core (Motor de Precisión)
+## Parte A: Nexus Core (Motor de Plegado Geométrico)
 
-**Descripción General:** SLRM-nD Nexus es un motor de alto rendimiento diseñado para resolver problemas **N-Dimensionales** mediante el plegado recursivo de vecindades. Utiliza lógica de Regresión Lineal Multidimensional Segmentada para proporcionar respuestas exactas basadas en puntos de datos reales sin tiempo de entrenamiento.
+**Descripción General:** SLRM-nD Nexus es un motor de alto rendimiento diseñado para resolver problemas **N-Dimensionales** mediante el plegado recursivo de vecindades. 
+
+**Versión Actual:** 1.4 (Estrategia Lumin Integrada)
 
 ### Características Clave (Nexus)
 * **Precisión Absoluta:** Tasa de error 0.0 en sistemas lineales estructurados.
-* **Ultra-Ligero:** Optimizado para entornos de bajos recursos.
-* **Escudo de Datos (v1.2):** Manejo automático de nulos (NaN), duplicados y sectores de datos dispersos (Regla de la Constante de Alex).
+* **Plegado Determinista:** Priorización de ejes a alta velocidad basada en la densidad de datos (Estrategia Lumin).
+
+### Benchmark Nexus (1000D)
+```text
+Iniciando Test Nexus v1.4 (1000D)...
+Nexus cargado con 1000 puntos de datos.
+
+RESULTADO DE PREDICCIÓN: 0.542842685417896
+TIEMPO DE EJECUCIÓN: 41.96 ms
+```
 
 ### Inicio Rápido (Nexus)
 ```python
 from slrm_nexus import SLRMNexus
 import numpy as np
 
-# Inicializar para 10 dimensiones
-modelo = SLRMNexus(dimensions=10)
+# Inicializar para 1000 dimensiones
+model = SLRMNexus(dimensions=1000)
 
 # Limpiar y cargar datos
-modelo.fit(tus_datos)
+model.fit(tus_datos)
 
-# Predecir un punto
-resultado = modelo.predict(tu_punto)
+# Predecir en milisegundos
+result = model.predict(tu_punto)
 ```
 
-## Parte B: Lumin Core (Motor de Alta Dimensionalidad)
+## Parte B: Lumin Core (Motor para Altas Dimensiones)
 
-**Descripción General:** Lumin es la evolución de "fuerza bruta" de la lógica SLRM para Redes Neuronales de alta dimensionalidad. Está especializado en rendimiento masivo (1000D+) y conjuntos de datos extremadamente dispersos, utilizando Anclaje de Ejes y Cercos de Seguridad.
+**Descripción General:** Lumin es la evolución de "fuerza bruta" de la lógica SLRM para Redes Neuronales de Alta Dimensionalidad. Está especializado en rendimiento (1000D+) y conjuntos de datos extremadamente dispersos, utilizando Anclaje de Ejes y Fronteras de Seguridad.
 
-### Benchmark Millennium (1000D)
+**Versión Actual:** 1.2 (Estable)
+
+### Millennium Benchmark (Lumin)
 ```text
-Lanzando Millennium Test (Lumin v1.2) en 1000D...
+Iniciando Test Millennium (Lumin v1.2) en 1000D...
 Lumin Core v1.2: 1500 puntos cargados y purificados.
---------------------------------------------------
-ESTADÍSTICAS DEL HIPERESPACIO (1000D)
+
 VALOR REAL: 334.674728
 PREDICCIÓN: 333.324631
-ERROR ABS:  1.350097 
-TIEMPO:     194.94 ms
---------------------------------------------------
+ERROR ABSOLUTO: 1.350097
+TIEMPO: 194.94 ms
 ```
 
 ### Inicio Rápido (Lumin)
@@ -51,21 +60,22 @@ from slrm_lumin import SLRMLumin
 import numpy as np
 
 # Inicializar para 1000 dimensiones
-modelo = SLRMLumin(dimensions=1000)
+model = SLRMLumin(dimensions=1000)
 
-# Cargar datos y predecir
-modelo.fit(datos_1000d)
-resultado = modelo.predict(punto_1000d)
+# Cargar datos y Predecir
+model.fit(datos_1000d)
+result = model.predict(punto_1000d)
 ```
 
 ## Parte C: Observaciones Técnicas y Comparativa
 
 ### Nexus vs. Lumin: ¿Cuál utilizar?
-* **Usa Nexus** cuando tengas un dataset denso, bien estructurado y necesites perfección matemática (error 0.0 en tendencias lineales). Es el "Maestro del Plegado".
-* **Usa Lumin** cuando te enfrentes a la "Maldición de la Dimensionalidad" en IA. Si tienes más de 50-100 dimensiones o datos muy dispersos, el Cerco de Seguridad de Lumin proporcionará resultados estables donde las redes tradicionales fallan.
+
+* **Nexus (Plegado Geométrico):** La complejidad depende del potencial de coordenadas (2^d). Ideal para datasets densos y estructurados donde se requiere perfección matemática. Ahora optimizado para respuestas en sub-50ms en 1000D.
+* **Lumin (Anclaje de Ejes):** La complejidad depende de un anclaje lineal (1 + d). Es la elección especializada para combatir la "Maldición de la Dimensionalidad" en entornos muy dispersos.
 
 ### Rendimiento General
-Ambos motores están construidos sobre NumPy, asegurando operaciones matriciales de alta velocidad. No requieren GPUs ni ciclos pesados de entrenamiento, lo que los hace la alternativa ligera perfecta al Deep Learning tradicional para tareas específicas de regresión.
+Ambos motores están construidos sobre NumPy, asegurando operaciones matriciales de alta velocidad. No requieren GPUs ni ciclos pesados de entrenamiento, siendo la alternativa ligera perfecta al Deep Learning tradicional.
 
 ---
 *Desarrollado para la comunidad global de desarrolladores. Cerrando la brecha entre la lógica geométrica y las Redes Neuronales de alta dimensionalidad.*

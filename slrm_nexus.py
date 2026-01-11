@@ -1,71 +1,84 @@
 # ==========================================
-# Project: SLRM-nD (Nexus Core v1.2)
+# Project: SLRM-nD (Nexus Core v1.3)
 # Developers: Alex & Gemini
 # License: MIT License
+# Release: 2026 - The Precision Era
 # ==========================================
-
 import numpy as np
 
 class SLRMNexus:
+    """
+    Nexus Core v1.3: High-Dimensional Geometric Folding Engine.
+    Introduces the 'Lumin-Strategy' for deterministic axis selection.
+    """
     def __init__(self, dimensions):
         self.d = dimensions
         self.dataset = None
 
     def fit(self, data):
-        """
-        Cleans, purifies, and organizes the dataset for the Nexus engine.
-        """
-        # --- SHIELD v1.2: Data Cleaning ---
-        # Convert to numpy array and remove rows with NaNs (null values)
+        """Purifies and organizes the dataset for the Nexus engine."""
         data = np.array(data)
+        # Shield v1.2: Remove NaNs and Duplicates
         data = data[~np.isnan(data).any(axis=1)]
-        
-        # Remove exact duplicates to avoid redundancy
         _, idx = np.unique(data[:, :-1], axis=0, return_index=True)
         self.dataset = data[idx]
-        
-        # Algebraic Sorting (Nexus navigation map)
-        # This sorts by all dimensions to allow recursive neighbor searching
+        # Lexicographical sort for base structure
         self.dataset = self.dataset[np.lexsort([self.dataset[:, i] for i in range(self.d-1, -1, -1)])]
-        print(f"Nexus Core v1.2: {len(self.dataset)} points purified.")
+        return len(self.dataset)
 
-    def _fold(self, point, data, dim):
+    def _get_quality_roadmap(self, point):
         """
-        Recursive core that performs the dimensional folding.
+        LUMIN CRITERION: Calculates the 'Quality Roadmap'.
+        Prioritizes dimensions with the smallest proximity deltas.
         """
-        # BASE CASE: We reached the final Y value
-        if dim == self.d: return data[0, -1]
+        quality_scores = []
+        for i in range(self.d):
+            column = self.dataset[:, i]
+            lower_bound = column[column <= point[i]]
+            upper_bound = column[column >= point[i]]
+            
+            if len(lower_bound) > 0 and len(upper_bound) > 0:
+                delta = upper_bound.min() - lower_bound.max()
+            else:
+                delta = column.max() - column.min()
+            quality_scores.append((delta, i))
+        
+        # Sort by smallest delta (highest precision first)
+        return [idx for delta, idx in sorted(quality_scores)]
 
-        x_in = point[dim]
-        coords = np.unique(data[:, dim])
-        
-        # ALEX'S RULE: Constant logic if no pair is found for slope calculation
-        if len(coords) == 1: 
-            return self._fold(point, data, dim + 1)
-        
-        # BORDER EXTRAPOLATION & NEIGHBORHOOD SEARCH
-        if x_in <= coords[0]: 
+    def _fold(self, point, data, roadmap, level):
+        """Recursive core guided by the Quality Roadmap."""
+        # Base Case: All dimensions folded or single point reached
+        if level == len(roadmap) or data.shape[0] <= 1:
+            return np.mean(data[:, -1]) if data.size > 0 else 0
+
+        current_dim = roadmap[level]
+        x_in = point[current_dim]
+        coords = np.unique(data[:, current_dim])
+
+        if len(coords) == 1:
+            return self._fold(point, data, roadmap, level + 1)
+
+        # Border Extrapolation logic
+        if x_in <= coords[0]:
             x0, x1 = coords[0], coords[1]
-        elif x_in >= coords[-1]: 
+        elif x_in >= coords[-1]:
             x0, x1 = coords[-2], coords[-1]
         else:
             x0 = coords[coords <= x_in].max()
             x1 = coords[coords > x_in].min()
 
-        # NEXUS FOLDING ENGINE
-        # Distance 'd' for linear interpolation or extrapolation
+        # Folding interpolation weight
         d = (x_in - x0) / (x1 - x0)
         
-        # Recursive branching
-        y0 = self._fold(point, data[data[:, dim] == x0], dim + 1)
-        y1 = self._fold(point, data[data[:, dim] == x1], dim + 1)
+        # Branching using the prioritized roadmap
+        y0 = self._fold(point, data[data[:, current_dim] == x0], roadmap, level + 1)
+        y1 = self._fold(point, data[data[:, current_dim] == x1], roadmap, level + 1)
 
-        # The fundamental folding equation
         return y0 * (1 - d) + y1 * d
 
     def predict(self, point):
-        """
-        Predicts the output for a given N-dimensional point.
-        """
-        if self.dataset is None: return "Error: No data loaded."
-        return self._fold(point, self.dataset, 0)
+        """Predicts the output using the optimized Quality Roadmap."""
+        if self.dataset is None: return "Error: No data"
+        roadmap = self._get_quality_roadmap(point)
+        return self._fold(point, self.dataset, roadmap, 0)

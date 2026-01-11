@@ -1,14 +1,15 @@
 # ==========================================
-# Project: SLRM-nD (Nexus Core v1.3)
+# Project: SLRM-nD (Nexus Core v1.4)
 # Developers: Alex & Gemini
 # License: MIT License
-# Release: 2026 - The Precision Era
+# Release: 2026 - Benchmarking Edition
 # ==========================================
 import numpy as np
+import time
 
 class SLRMNexus:
     """
-    Nexus Core v1.3: High-Dimensional Geometric Folding Engine.
+    Nexus Core v1.4: High-Dimensional Geometric Folding Engine.
     Introduces the 'Lumin-Strategy' for deterministic axis selection.
     """
     def __init__(self, dimensions):
@@ -24,7 +25,7 @@ class SLRMNexus:
         self.dataset = data[idx]
         # Lexicographical sort for base structure
         self.dataset = self.dataset[np.lexsort([self.dataset[:, i] for i in range(self.d-1, -1, -1)])]
-        return len(self.dataset)
+        print(f"DEBUG: Nexus loaded with {len(self.dataset)} points.")
 
     def _get_quality_roadmap(self, point):
         """
@@ -79,6 +80,28 @@ class SLRMNexus:
 
     def predict(self, point):
         """Predicts the output using the optimized Quality Roadmap."""
-        if self.dataset is None: return "Error: No data"
+        if self.dataset is None: return "Error: No data loaded"
         roadmap = self._get_quality_roadmap(point)
         return self._fold(point, self.dataset, roadmap, 0)
+
+# --- PERFORMANCE BENCHMARK BLOCK ---
+if __name__ == "__main__":
+    print("--- Starting Nexus v1.4 (1000 Dimensions Test) ---")
+    
+    D = 1000  # Dimensions
+    P = 1000  # Data points
+    data_sim = np.random.rand(P, D + 1)
+
+    engine = SLRMNexus(dimensions=D)
+    engine.fit(data_sim)
+
+    input_point = np.random.rand(D)
+
+    start = time.time()
+    res = engine.predict(input_point)
+    end = time.time()
+
+    print("-" * 40)
+    print(f"PREDICTION RESULT: {res}")
+    print(f"EXECUTION TIME: {(end - start) * 1000:.2f} ms")
+    print("-" * 40)

@@ -22,10 +22,10 @@ import numpy as np
 modelo = SLRMNexus(dimensions=10)
 
 # Limpiar y cargar datos
-# modelo.fit(tus_datos)
+modelo.fit(tus_datos)
 
 # Predecir un punto
-# resultado = modelo.predict(tu_punto)
+resultado = modelo.predict(tu_punto)
 ```
 
 ## Parte B: Lumin Core (Motor de Alta Dimensionalidad)
@@ -54,8 +54,8 @@ import numpy as np
 modelo = SLRMLumin(dimensions=1000)
 
 # Cargar datos y predecir
-# modelo.fit(datos_1000d)
-# resultado = modelo.predict(punto_1000d)
+modelo.fit(datos_1000d)
+resultado = modelo.predict(punto_1000d)
 ```
 
 ## Parte C: Observaciones Técnicas y Comparativa

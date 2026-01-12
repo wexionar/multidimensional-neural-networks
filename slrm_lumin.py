@@ -1,5 +1,5 @@
 # ==========================================
-# Project: SLRM-nD (Lumin Core v1.2)
+# Project: SLRM-nD (Lumin Core v1.4)
 # Developers: Alex & Gemini
 # License: MIT License
 # ==========================================
@@ -8,106 +8,105 @@ import time
 
 class SLRMLumin:
     """
-    SLRM Lumin Core v1.2
-    High-fidelity interpolation engine for high-dimensional hyperspaces.
-    Specifically designed for sparse datasets and high-complexity environments.
+    SLRM Lumin Core v1.4
+    Optimized for high-dimensional hyperspaces using Simplex Sectoring (D+1).
+    F1-Vectorized Edition for minimal latency.
     """
     def __init__(self, dimensions):
         self.d = dimensions
         self.dataset = None
 
     def fit(self, data):
-        """Dataset purification and loading in SLRM style."""
-        data = np.array(data)
-        # Removing NaNs to ensure numerical stability
-        self.dataset = data[~np.isnan(data).any(axis=1)]
-        print(f"Lumin Core v1.2: {len(self.dataset)} points loaded and purified.")
+        """Clean and load the dataset into memory."""
+        self.dataset = np.array(data)
+        # Numerical stability: remove rows with NaNs
+        self.dataset = self.dataset[~np.isnan(self.dataset).any(axis=1)]
+        print(f"Lumin Core v1.4 (F1): {len(self.dataset)} points loaded.")
 
     def predict(self, input_point):
-        """Prediction via Security Boundary and Inverse Distance Weighting."""
-        if self.dataset is None: return "Error: No data. Run fit() first."
+        """
+        Prediction via Simplex Reconstruction.
+        Discards 'opposite' points on each axis to form a minimal surrounding sector.
+        """
+        if self.dataset is None:
+            return "Error: Dataset not loaded."
         
         input_point = np.array(input_point)
-        
-        # 1. ANCHOR LOCATION (Stability control axis)
-        best_axis = -1
-        min_dist = float('inf')
-        v_min_a, v_max_a = None, None
-        
-        for i in range(self.d):
-            coords = self.dataset[:, i]
-            lowers = coords[coords <= input_point[i]]
-            highers = coords[coords > input_point[i]]
-            
-            if len(lowers) > 0 and len(highers) > 0:
-                dist = highers.min() - lowers.max()
-                if dist < min_dist:
-                    min_dist, best_axis = dist, i
-                    v_min_a, v_max_a = lowers.max(), highers.min()
+        X = self.dataset[:, :-1]
+        Y = self.dataset[:, -1]
 
-        # FALLBACK: If point is outside the dataset range (Proximity Extrapolation)
-        if best_axis == -1:
-            fs_distances = np.linalg.norm(self.dataset[:, :-1] - input_point, axis=1)
-            return self.dataset[np.argmin(fs_distances), -1]
+        # --- VECTORIZED F1 SEARCH ---
+        # Calculate differences in a single pass across all points/dimensions
+        diffs = input_point - X # Positive values indicate INF nodes
+        
+        # Binary masks for sectoring
+        inf_mask = diffs >= 0
+        sup_mask = diffs < 0
+        
+        # Use extreme values to find the nearest candidates without slow loops
+        inf_data = np.where(inf_mask, diffs, -np.inf)
+        sup_data = np.where(sup_mask, diffs, np.inf)
 
-        # 2. SECURITY BOUNDARY CONSTRUCTION (Vectorized for 1000D+)
-        boundary_points = [
-            self.dataset[self.dataset[:, best_axis] == v_min_a][0],
-            self.dataset[self.dataset[:, best_axis] == v_max_a][0]
-        ]
-        
-        for i in range(self.d):
-            if i == best_axis: continue
-            col_i = self.dataset[:, i]
-            
-            inf_mask = col_i <= input_point[i]
-            sup_mask = col_i > input_point[i]
-            
-            if np.any(inf_mask):
-                idx_inf = np.where(inf_mask)[0]
-                boundary_points.append(self.dataset[idx_inf[np.argmax(col_i[idx_inf])]])
-            if np.any(sup_mask):
-                idx_sup = np.where(sup_mask)[0]
-                boundary_points.append(self.dataset[idx_sup[np.argmin(col_i[idx_sup])]])
-        
-        # Remove duplicates to optimize final calculation
-        module = np.unique(np.array(boundary_points), axis=0)
-        
-        # 3. INVERSE DISTANCE WEIGHTING (IDW)
-        distances = np.linalg.norm(module[:, :-1] - input_point, axis=1)
-        # Avoid division by zero with an infinitesimal constant
-        distances = np.where(distances == 0, 1e-10, distances)
-        
-        weights = 1.0 / distances
-        return np.sum(module[:, -1] * weights) / np.sum(weights)
+        # Retrieve indices for the closest candidates per axis
+        idx_inf = np.argmax(inf_data, axis=0)
+        idx_sup = np.argmin(sup_data, axis=0)
 
-# --- EXECUTION BLOCK: 1,000 DIMENSIONS TEST ---
+        # Select candidate nodes
+        nodes_inf = self.dataset[idx_inf]
+        nodes_sup = self.dataset[idx_sup]
+
+        # --- THE MAGIC OF DISCARDING (Vectorized) ---
+        # Compare absolute distances on each axis to determine the winner
+        dist_inf = np.abs(input_point - nodes_inf[:, :-1]).diagonal()
+        dist_sup = np.abs(nodes_sup[:, :-1] - input_point).diagonal()
+        
+        # Select node based on proximity: "The closest survives"
+        choice_mask = (dist_inf < dist_sup).reshape(-1, 1)
+        simplex_nodes = np.where(choice_mask, nodes_inf, nodes_sup)
+
+        # --- SECTOR CLOSURE ---
+        # Append the global nearest neighbor to ensure a closed geometric volume
+        global_dists = np.linalg.norm(X - input_point, axis=1)
+        closest_node = self.dataset[np.argmin(global_dists)]
+        
+        # Consolidate nodes and remove duplicates
+        final_nodes = np.unique(np.vstack([simplex_nodes, closest_node]), axis=0)
+
+        # --- GEOMETRIC INTERPOLATION (Linear Projection) ---
+        node_coords = final_nodes[:, :-1]
+        node_values = final_nodes[:, -1]
+        
+        local_dists = np.linalg.norm(node_coords - input_point, axis=1)
+        local_dists = np.maximum(local_dists, 1e-10) # Avoid division by zero
+        
+        inv_dists = 1.0 / local_dists
+        weights = inv_dists / np.sum(inv_dists)
+        
+        return np.dot(weights, node_values)
+
+# --- MILLENNIUM TEST (1,000 Dimensions) ---
 if __name__ == "__main__":
-    TEST_DIMS = 1000
-    TEST_POINTS = 1500
-    
-    print(f"Launching Millennium Test (Lumin v1.2) in {TEST_DIMS}D...")
-    
-    # Synthetic massive dataset (Y = sum of squares)
-    X = np.random.rand(TEST_POINTS, TEST_DIMS)
-    Y = np.sum(X**2, axis=1).reshape(-1, 1)
-    demo_dataset = np.hstack((X, Y))
-    
-    engine = SLRMLumin(TEST_DIMS)
-    engine.fit(demo_dataset)
-    
-    test_point = np.random.rand(TEST_DIMS)
-    real_value = np.sum(test_point**2)
-    
-    t_start = time.perf_counter()
-    prediction = engine.predict(test_point)
-    t_end = time.perf_counter()
-    
+    D, P = 1000, 1500
+    print(f"Launching Test: Lumin v1.4 in {D}D with {P} points...")
+
+    # Generate Synthetic Data: Sum of Squares
+    X_test = np.random.rand(P, D)
+    Y_test = np.sum(X_test**2, axis=1).reshape(-1, 1)
+    data = np.hstack((X_test, Y_test))
+
+    engine = SLRMLumin(D)
+    engine.fit(data)
+
+    target = np.random.rand(D)
+    real_val = np.sum(target**2)
+
+    start = time.perf_counter()
+    pred = engine.predict(target)
+    end = time.perf_counter()
+
     print("-" * 50)
-    print(f"HYPERSPACE STATISTICS ({TEST_DIMS}D)")
-    print(f"REAL VALUE: {real_value:.6f}")
-    print(f"PREDICTION: {prediction:.6f}")
-    print(f"ABS ERROR:  {abs(real_value - prediction):.6f}")
-    print(f"TIME:       {(t_end - t_start)*1000:.2f} ms")
+    print(f"RESULTS F1 EDITION:")
+    print(f"REAL: {real_val:.4f} | PRED: {pred:.4f}")
+    print(f"ABS ERROR: {abs(real_val - pred):.4f}")
+    print(f"LATENCY: {(end - start)*1000:.2f} ms")
     print("-" * 50)
-    print("Certified result for high-dimensional production.")

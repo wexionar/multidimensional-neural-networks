@@ -1,5 +1,5 @@
 # ==========================================
-# Proyecto: SLRM-nD (Lumin Core v1.2)
+# Proyecto: SLRM-nD (Lumin Core v1.4)
 # Desarrolladores: Alex & Gemini
 # Licencia: MIT License
 # ==========================================
@@ -7,103 +7,88 @@ import numpy as np
 import time
 
 class SLRMLumin:
-    """
-    SLRM Lumin Core v1.2
-    Motor de interpolación de alta fidelidad para hiperespacios de gran dimensión.
-    Especialmente diseñado para datasets dispersos y entornos de alta complejidad.
-    """
-    def __init__(self, dimensiones):
-        self.d = dimensiones
+    def __init__(self, dimensions):
+        self.d = dimensions
         self.dataset = None
 
     def fit(self, data):
-        """Purificación y carga del dataset al estilo SLRM."""
-        data = np.array(data)
-        self.dataset = data[~np.isnan(data).any(axis=1)]
-        print(f"Lumin Core v1.2: {len(self.dataset)} puntos cargados y purificados.")
+        self.dataset = np.array(data)
+        self.dataset = self.dataset[~np.isnan(self.dataset).any(axis=1)]
+        print(f"Lumin Core v1.4.1 (F1): {len(self.dataset)} points loaded.")
 
-    def predict(self, punto_in):
-        """Predicción por Cerco de Seguridad y Ponderación de Distancia Inversa."""
-        if self.dataset is None: return "Error: Sin datos. Ejecute fit() primero."
+    def predict(self, input_point):
+        if self.dataset is None: return "Error"
         
-        punto_in = np.array(punto_in)
-        
-        # 1. LOCALIZACIÓN DE ANCLA (Eje de control de estabilidad)
-        mejor_eje = -1
-        dist_min = float('inf')
-        v_min_a, v_max_a = None, None
-        
-        for i in range(self.d):
-            coords = self.dataset[:, i]
-            menores = coords[coords <= punto_in[i]]
-            mayores = coords[coords > punto_in[i]]
-            
-            if len(menores) > 0 and len(mayores) > 0:
-                dist = mayores.min() - menores.max()
-                if dist < dist_min:
-                    dist_min, mejor_eje = dist, i
-                    v_min_a, v_max_a = menores.max(), mayores.min()
+        input_point = np.array(input_point)
+        X = self.dataset[:, :-1]
+        Y = self.dataset[:, -1]
 
-        # FALLBACK: Si el punto está fuera del rango del dataset
-        if mejor_eje == -1:
-            distancias_fs = np.linalg.norm(self.dataset[:, :-1] - punto_in, axis=1)
-            return self.dataset[np.argmin(distancias_fs), -1]
+        # --- VECTORIZED F1 SEARCH ---
+        # Calculamos las diferencias de una sola pasada para todos los puntos y dimensiones
+        diffs = input_point - X # Positivo si el punto del dataset es INF
+        
+        # Máscaras rápidas
+        inf_mask = diffs >= 0
+        sup_mask = diffs < 0
+        
+        # Usamos valores extremos para encontrar los más cercanos sin bucles lentos
+        inf_data = np.where(inf_mask, diffs, -np.inf)
+        sup_data = np.where(sup_mask, diffs, np.inf)
 
-        # 2. CONSTRUCCIÓN DEL CERCO DE SEGURIDAD (Optimizado para 1000D+)
-        puntos_cerco = [
-            self.dataset[self.dataset[:, mejor_eje] == v_min_a][0],
-            self.dataset[self.dataset[:, mejor_eje] == v_max_a][0]
-        ]
-        
-        for i in range(self.d):
-            if i == mejor_eje: continue
-            col_i = self.dataset[:, i]
-            mask_inf = col_i <= punto_in[i]
-            mask_sup = col_i > punto_in[i]
-            
-            if np.any(mask_inf):
-                idx_inf = np.where(mask_inf)[0]
-                puntos_cerco.append(self.dataset[idx_inf[np.argmax(col_i[idx_inf])]])
-            if np.any(mask_sup):
-                idx_sup = np.where(mask_sup)[0]
-                puntos_cerco.append(self.dataset[idx_sup[np.argmin(col_i[idx_sup])]])
-        
-        modulo = np.unique(np.array(puntos_cerco), axis=0)
-        
-        # 3. PONDERACIÓN POR DISTANCIA INVERSA (IDW)
-        distancias = np.linalg.norm(modulo[:, :-1] - punto_in, axis=1)
-        distancias = np.where(distancias == 0, 1e-10, distancias)
-        
-        pesos = 1.0 / distancias
-        return np.sum(modulo[:, -1] * pesos) / np.sum(pesos)
+        # Encontramos los índices de los candidatos más cercanos por cada eje
+        idx_inf = np.argmax(inf_data, axis=0)
+        idx_sup = np.argmin(sup_data, axis=0)
 
-# --- BLOQUE DE EJECUCIÓN: TEST DE LAS 1.000 DIMENSIONES ---
+        # Seleccionamos los candidatos
+        nodes_inf = self.dataset[idx_inf]
+        nodes_sup = self.dataset[idx_sup]
+
+        # LA MAGIA DEL DESCARTE (Vectorizada)
+        # Comparamos distancias absolutas en cada eje para elegir el ganador
+        dist_inf = np.abs(input_point - nodes_inf[:, :-1]).diagonal()
+        dist_sup = np.abs(nodes_sup[:, :-1] - input_point).diagonal()
+        
+        # Elegimos el nodo según tu lógica de "el más cercano sobrevive"
+        choice_mask = (dist_inf < dist_sup).reshape(-1, 1)
+        simplex_nodes = np.where(choice_mask, nodes_inf, nodes_sup)
+
+        # SECTOR CLOSURE (Añadimos el vecino más cercano global)
+        global_dists = np.linalg.norm(X - input_point, axis=1)
+        closest_node = self.dataset[np.argmin(global_dists)]
+        
+        # Unimos todo y limpiamos duplicados
+        final_nodes = np.unique(np.vstack([simplex_nodes, closest_node]), axis=0)
+
+        # INTERPOLACIÓN GEOMÉTRICA (Linear Projection)
+        node_coords = final_nodes[:, :-1]
+        node_values = final_nodes[:, -1]
+        
+        local_dists = np.linalg.norm(node_coords - input_point, axis=1)
+        local_dists = np.maximum(local_dists, 1e-10) # Evitar división por cero
+        
+        inv_dists = 1.0 / local_dists
+        weights = inv_dists / np.sum(inv_dists)
+        
+        return np.dot(weights, node_values)
+
+# --- TEST RÁPIDO ---
 if __name__ == "__main__":
-    DIMS_TEST = 1000
-    PUNTOS_TEST = 1500
+    D, P = 1000, 1500
+    X_test = np.random.rand(P, D)
+    Y_test = np.sum(X_test**2, axis=1).reshape(-1, 1)
+    data = np.hstack((X_test, Y_test))
+
+    engine = SLRMLumin(D)
+    engine.fit(data)
+
+    target = np.random.rand(D)
+    real_val = np.sum(target**2)
+
+    start = time.perf_counter()
+    pred = engine.predict(target)
+    end = time.perf_counter()
+
+    print(f"\nRESULTS F1 EDITION:")
+    print(f"REAL: {real_val:.4f} | PRED: {pred:.4f}")
+    print(f"LATENCY: {(end - start)*1000:.2f} ms")
     
-    print(f"Lanzando Millennium Test (Lumin v1.2) en {DIMS_TEST}D...")
-    
-    # Datos sintéticos masivos
-    X = np.random.rand(PUNTOS_TEST, DIMS_TEST)
-    Y = np.sum(X**2, axis=1).reshape(-1, 1)
-    dataset_demo = np.hstack((X, Y))
-    
-    motor = SLRMLumin(DIMS_TEST)
-    motor.fit(dataset_demo)
-    
-    punto_test = np.random.rand(DIMS_TEST)
-    valor_real = np.sum(punto_test**2)
-    
-    t_start = time.perf_counter()
-    prediccion = motor.predict(punto_test)
-    t_end = time.perf_counter()
-    
-    print("-" * 50)
-    print(f"ESTADÍSTICAS DEL HIPERESPACIO ({DIMS_TEST}D)")
-    print(f"VALOR REAL: {valor_real:.6f}")
-    print(f"PREDICCIÓN: {prediccion:.6f}")
-    print(f"ERROR ABS:  {abs(valor_real - prediccion):.6f}")
-    print(f"TIEMPO:     {(t_end - t_start)*1000:.2f} ms")
-    print("-" * 50)
-    print("Resultado certificado para producción en alta dimensionalidad.")

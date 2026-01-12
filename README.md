@@ -17,10 +17,10 @@ SLRM-nD Nexus is a high-performance engine designed to solve **N-Dimensional** p
 ### Nexus Benchmark (1000D)
 ```text
 Launching Nexus v1.4 Test (1000D)...
-Nexus loaded with 1000 points.
+Nexus loaded with 1500 points.
 
-PREDICTION RESULT: 0.542842685417896
-EXECUTION TIME: 41.96 ms
+PREDICTION RESULT: 0.6227576180933394
+EXECUTION TIME: 40.99 ms
 ```
 
 ### Quick Start (Nexus)

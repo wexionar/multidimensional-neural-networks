@@ -89,7 +89,7 @@ if __name__ == "__main__":
     print("--- Starting Nexus v1.4 (1000 Dimensions Test) ---")
     
     D = 1000  # Dimensions
-    P = 1000  # Data points
+    P = 1500  # Data points
     data_sim = np.random.rand(P, D + 1)
 
     engine = SLRMNexus(dimensions=D)

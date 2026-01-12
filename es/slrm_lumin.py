@@ -14,7 +14,7 @@ class SLRMLumin:
     def fit(self, data):
         self.dataset = np.array(data)
         self.dataset = self.dataset[~np.isnan(self.dataset).any(axis=1)]
-        print(f"Lumin Core v1.4.1 (F1): {len(self.dataset)} points loaded.")
+        print(f"Lumin Core v1.4 (F1): {len(self.dataset)} points loaded.")
 
     def predict(self, input_point):
         if self.dataset is None: return "Error"

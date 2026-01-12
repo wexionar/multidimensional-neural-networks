@@ -16,10 +16,10 @@
 ### Benchmark Nexus (1000D)
 ```text
 Iniciando Test Nexus v1.4 (1000D)...
-Nexus cargado con 1000 puntos de datos.
+Nexus cargado con 1500 puntos de datos.
 
-RESULTADO DE PREDICCIÓN: 0.542842685417896
-TIEMPO DE EJECUCIÓN: 41.96 ms
+RESULTADO DE PREDICCIÓN: 0.6227576180933394
+TIEMPO DE EJECUCIÓN: 40.99 ms
 ```
 
 ### Inicio Rápido (Nexus)

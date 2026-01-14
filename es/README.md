@@ -41,6 +41,8 @@ result = model.predict(tu_punto)
 ## Anexo A: Nexus-Memory v1.4
 Motor de computación de alta dimensión (1000D+) basado en deducción geométrica y almacenamiento persistente Memory-C.
 
+**Script:** `nexus_memory.py`
+
 ### Rendimiento (Benchmarking 2026)
 - Dataset: 240,000 puntos @ 1000 dimensiones.
 - Deducción Inicial (Nexus Core): ~726.18 ms.
@@ -84,6 +86,8 @@ result = model.predict(punto_1000d)
 ## Anexo B: Lumin-Memory v1.4
 Motor de alta dimensión escalable que utiliza indexación espacial (cKDTree) y recobro persistente Memory-C.
 
+**Script:** `lumin_memory.py`
+
 ### Rendimiento (Benchmarking 2026)
 - Dataset: 240,000 puntos @ 1000 dimensiones.
 - Deducción Inicial (Lumin Core): ~586.68 ms.
@@ -94,7 +98,32 @@ Motor de alta dimensión escalable que utiliza indexación espacial (cKDTree) y 
 
 ---
 
-## Parte C: Observaciones Técnicas y Comparativa
+## Parte C: El Puente de Identidad (Lumin-to-ReLU)
+
+**Descripción general:** El "Bridge" es un traductor matemático que convierte los sectores de Símplex geométricos de Lumin en arquitecturas estándar de Redes Neuronales. Demuestra la identidad entre un modelo lineal local basado en Símplex y una red ReLU de una sola capa.
+
+**Script:** `lumin_to_relu.py`
+
+### Benchmark del Puente (Identidad 1000D)
+```text
+--- LUMIN TO RELU BRIDGE ---
+Dimensions: 1000
+Latency: 2071.61 us
+
+--- ReLU Equation (1000 terms) ---
+Y = bias + (w1)*ReLU(x1) + ... + (w1000)*ReLU(x1000)
+
+--- MATHEMATICAL TRUTH TEST ---
+Result: -60.0137615537
+Error:  0.0e+00
+```
+
+### Concepto Clave
+El Puente demuestra que SLRM-nD no es solo una alternativa al Deep Learning, sino un método determinista para **inicializar y estabilizar** capas de Redes Neuronales de alta dimensión con cero error de aproximación.
+
+---
+
+## Parte D: Observaciones Técnicas y Comparativa
 
 ### Nexus vs. Lumin: ¿Cuál utilizar?
 

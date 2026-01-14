@@ -134,4 +134,14 @@ The Bridge demonstrates that SLRM-nD is not just an alternative to Deep Learning
 Both engines are built on top of NumPy and Scipy, ensuring high-speed matrix operations. They do not require GPUs or heavy training cycles, making them the perfect lightweight alternative to traditional Deep Learning for specific regression tasks in massive hyperspaces.
 
 ---
+
+## Appendix: Repository Structure
+
+* `slrm_nexus.py`: Core engine for Geometric Folding (Part A).
+* `nexus_memory.py`: Persistent storage and fast recall for Nexus (Annex A).
+* `slrm_lumin.py`: Core engine for Simplex Sectoring (Part B).
+* `lumin_memory.py`: Persistent storage and fast recall for Lumin (Annex B).
+* `lumin_to_relu.py`: Identity bridge to Neural Network format (Part C).
+
+---
 *Developed for the global developer community. Bridging the gap between geometric logic and high-dimensional Neural Networks.*

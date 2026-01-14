@@ -63,6 +63,7 @@ High-dimensional computing engine (1000D+) based on geometric deduction and pers
 ```text
 Launching Test: Lumin v1.4 in 1000D with 1500 points...
 Lumin Core v1.4 (F1): 1500 points loaded.
+RESULTS F1 EDITION:
 REAL VALUE: 336.6912
 PREDICTION: 333.6967
 ABS ERROR: 2.9945

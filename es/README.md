@@ -3,6 +3,8 @@
 **Desarrolladores:** Alex & Gemini  
 **Licencia:** MIT License  
 
+---
+
 ## Parte A: Nexus Core (Motor de Plegado Geométrico)
 
 **Descripción general:** SLRM-nD Nexus es un motor de alto rendimiento diseñado para resolver problemas **N-Dimensionales** mediante el plegado recursivo de vecindarios.
@@ -47,6 +49,8 @@ Motor de computación de alta dimensión (1000D+) basado en deducción geométri
 
 *Sin entrenamiento. Sin GPU. Geometría pura. Latencia cero.*
 
+---
+
 ## Parte B: Lumin Core (Motor de Sectorización Simplex)
 
 **Descripción general:** Lumin es la evolución especializada para hiperespacios dispersos de alta dimensión. Utiliza **Sectorización Simplex (D+1)** para descartar puntos opuestos en cada eje, garantizando el cierre geométrico incluso en entornos extremadamente dispersos.
@@ -88,6 +92,8 @@ Motor de alta dimensión escalable que utiliza indexación espacial (cKDTree) y 
 
 *Sin entrenamiento. Sin GPU. Geometría pura. Latencia cero.*
 
+---
+
 ## Parte C: Observaciones Técnicas y Comparativa
 
 ### Nexus vs. Lumin: ¿Cuál utilizar?
@@ -98,6 +104,16 @@ Motor de alta dimensión escalable que utiliza indexación espacial (cKDTree) y 
 
 ### Rendimiento General
 Ambos motores están construidos sobre NumPy y Scipy, garantizando operaciones matriciales de alta velocidad. No requieren GPUs ni ciclos pesados de entrenamiento, lo que los convierte en la alternativa ligera perfecta al Deep Learning tradicional para tareas específicas de regresión en hiperespacios masivos.
+
+---
+
+## Apéndice: Estructura del Repositorio
+
+* `slrm_nexus.py`: Motor principal para Plegado Geométrico (Parte A).
+* `nexus_memory.py`: Almacenamiento persistente y recuperación rápida para Nexus (Anexo A).
+* `slrm_lumin.py`: Motor principal para Sectorización de Símplex (Parte B).
+* `lumin_memory.py`: Almacenamiento persistente y recuperación rápida para Lumin (Anexo B).
+* `lumin_to_relu.py`: Puente de identidad hacia el formato de Redes Neuronales (Parte C).
 
 ---
 *Desarrollado para la comunidad global de desarrolladores. Cerrando la brecha entre la lógica geométrica y las redes neuronales de alta dimensión.*

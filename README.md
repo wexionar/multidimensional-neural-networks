@@ -138,9 +138,9 @@ Both engines are built on top of NumPy and Scipy, ensuring high-speed matrix ope
 
 ## Appendix: Repository Structure
 
-* `slrm_nexus.py`: Core engine for Geometric Folding (Part A).
+* `nexus_core.py`: Core engine for Geometric Folding (Part A).
 * `nexus_memory.py`: Persistent storage and fast recall for Nexus (Annex A).
-* `slrm_lumin.py`: Core engine for Simplex Sectoring (Part B).
+* `lumin_core.py`: Core engine for Simplex Sectoring (Part B).
 * `lumin_memory.py`: Persistent storage and fast recall for Lumin (Annex B).
 * `lumin_to_relu.py`: Identity bridge to Neural Network format (Part C).
 

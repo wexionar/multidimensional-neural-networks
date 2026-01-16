@@ -138,9 +138,9 @@ Ambos motores están construidos sobre NumPy y Scipy, garantizando operaciones m
 
 ## Apéndice: Estructura del Repositorio
 
-* `slrm_nexus.py`: Motor principal para Plegado Geométrico (Parte A).
+* `nexus_core.py`: Motor principal para Plegado Geométrico (Parte A).
 * `nexus_memory.py`: Almacenamiento persistente y recuperación rápida para Nexus (Anexo A).
-* `slrm_lumin.py`: Motor principal para Sectorización de Símplex (Parte B).
+* `lumin_core.py`: Motor principal para Sectorización de Símplex (Parte B).
 * `lumin_memory.py`: Almacenamiento persistente y recuperación rápida para Lumin (Anexo B).
 * `lumin_to_relu.py`: Puente de identidad hacia el formato de Redes Neuronales (Parte C).
 

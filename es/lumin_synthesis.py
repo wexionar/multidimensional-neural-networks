@@ -1,119 +1,124 @@
 # =============================================================
-# LUMIN-SYNTHESIS: nD Lexicographical Knowledge Compiler
+# LUMIN-SYNTHESIS: Compilador de Conocimiento nD (v1.4 B)
 # =============================================================
-# Project: SLRM-nD (Lumin Core v1.4)
-# Developers: Alex & Gemini
-# License: MIT License
-# Date: 2026-01-15
-# Description: Synthesizes massive datasets into minimal 
-#              Master Sectors using deductive geometry.
+# Proyecto: SLRM-nD (Lumin Core)
+# Desarrolladores: Alex Kinetic & Gemini
+# Licencia: Licencia MIT
+# Fecha: 2026-01-16
+# Descripción: Sintetiza datasets masivos en Sectores Maestros 
+#              mínimos mediante deducción geométrica jerárquica
+#              y pivotaje de ejes (Axis-Pivot Compiler).
 # =============================================================
 
-import numpy as np
-import pandas as pd
-import time
+import numpy as np
+import pandas as pd
+import time
 
-class LuminSynthesis:
-    """
-    Motor de Síntesis de Lumin: Convierte datos brutos en reglas
-    geométricas maestras (Hiperplanos) mediante barrido lexicográfico.
-    """
-    def __init__(self, epsilon=0.1):
-        self.epsilon = epsilon
-        self.master_sectors = None
+class LuminSynthesis:
+    """
+    Compilador Jerárquico de Pivote de Ejes. Deduce el orden óptimo de los ejes para maximizar la síntesis de datos.
+    """
+    def __init__(self, epsilon=0.1):
+        self.epsilon = epsilon
+        self.master_sectors = None
 
-    def compile(self, df):
-        """
-        Deduce las leyes matemáticas del dataset y las comprime.
-        """
-        start_time = time.perf_counter()
-        data = df.values
-        # Orden Lexicográfico: Crea la secuencia lógica para el crecimiento del sector
-        sorted_data = data[np.lexsort(data[:, :-1].T[::-1])]
-        D = data.shape[1] - 1
-        
-        synthesis_rows = []
-        base_idx = 0
-        
-        while base_idx < len(sorted_data):
-            last_valid_idx = base_idx
-            best_W, best_B = None, None
-            
-            # Expansión de Sector (Estrategia Logos-nD)
-            for i in range(base_idx + 1, len(sorted_data)):
-                current_group = sorted_data[base_idx : i + 1]
-                X_g = current_group[:, :-1]
-                Y_g = current_group[:, -1]
-                
-                # Entrenamiento Deductivo (Mínimos Cuadrados Directos)
-                A = np.c_[X_g, np.ones(X_g.shape[0])]
-                try:
-                    result, _, _, _ = np.linalg.lstsq(A, Y_g, rcond=None)
-                    W_tmp, B_tmp = result[:-1], result[-1]
-                    
-                    # Validación de fidelidad mediante Epsilon
-                    Y_pred = np.dot(X_g, W_tmp) + B_tmp
-                    if np.all(np.abs(Y_g - Y_pred) <= self.epsilon):
-                        best_W, best_B = W_tmp, B_tmp
-                        last_valid_idx = i
-                    else:
-                        break
-                except:
-                    break
-            
-            # Caso de punto aislado o fin de secuencia
-            if best_W is None:
-                best_W = np.zeros(D)
-                best_B = sorted_data[base_idx][-1]
+    def compile(self, df):
+        start_time = time.perf_counter()
+        data = df.values
+        D = data.shape[1] - 1
+        remaining_data = data.copy()
+        synthesis_rows = []
 
-            # Registro del Sector Maestro: [Límites, Pesos, Bias]
-            row = np.concatenate([
-                sorted_data[base_idx][:-1], 
-                sorted_data[last_valid_idx][:-1], 
-                best_W, 
-                [best_B]
-            ])
-            synthesis_rows.append(row)
-            base_idx = last_valid_idx + 1
+        while len(remaining_data) > 0:
+            best_axis_order = None
+            best_group_size = -1
+            best_W, best_B = None, None
 
-        # Nomenclatura de columnas para el CSV Maestro
-        cols = [f'X{i}_start' for i in range(1, D+1)] + \
-               [f'X{i}_end' for i in range(1, D+1)] + \
-               [f'W{i}' for i in range(1, D+1)] + ['Bias']
-        
-        self.master_sectors = pd.DataFrame(synthesis_rows, columns=cols)
-        duration = time.perf_counter() - start_time
-        return self.master_sectors, duration
+            # Buscamos el pivote de eje que más comprime
+            for axis in range(D):
+                # Re-ordenamos priorizando el eje actual (Hierarchical Pivot)
+                # Sort por todos los ejes, pero el actual es el primario
+                order = [i for i in range(D) if i != axis] + [axis]
+                current_sort = remaining_data[np.lexsort(remaining_data[:, order].T[::-1])]
 
-    def predict(self, X_input):
-        """
-        Inferencia instantánea utilizando el conocimiento sintetizado.
-        """
-        X_input = np.array(X_input)
-        for _, sector in self.master_sectors.iterrows():
-            D = (len(sector) - 1) // 3
-            x_start = sector.iloc[0:D].values
-            x_end = sector.iloc[D:2*D].values
-            
-            if np.all(X_input >= x_start) and np.all(X_input <= x_end):
-                W = sector.iloc[2*D:3*D].values
-                B = sector.iloc[-1]
-                return np.dot(X_input, W) + B
-        return None
+                # Intentamos expandir el sector
+                for i in range(1, len(current_sort)):
+                    X_g = current_sort[:i+1, :-1]
+                    Y_g = current_sort[:i+1, -1]
 
-# --- Ejecución de prueba para validación ---
-if __name__ == "__main__":
-    print("Iniciando motor Lumin-Synthesis...")
-    # Ejemplo con ley Y = 3X1 + 5X2 + 10
-    N = 500
-    X_test = np.random.uniform(0, 100, (N, 2))
-    Y_test = 3*X_test[:,0] + 5*X_test[:,1] + 10 + np.random.uniform(-0.05, 0.05, N)
-    df = pd.DataFrame(np.c_[X_test, Y_test], columns=['X1', 'X2', 'Y'])
+                    A = np.c_[X_g, np.ones(X_g.shape[0])]
+                    try:
+                        res, _, _, _ = np.linalg.lstsq(A, Y_g, rcond=None)
+                        W_tmp, B_tmp = res[:-1], res[-1]
+                        if np.all(np.abs(np.dot(X_g, W_tmp) + B_tmp - Y_g) <= self.epsilon):
+                            if i > best_group_size:
+                                best_group_size = i
+                                best_axis_order = current_sort
+                                best_W, best_B = W_tmp, B_tmp
+                        else: break
+                    except: break
 
-    compiler = LuminSynthesis(epsilon=0.1)
-    master_df, t = compiler.compile(df)
+            if best_group_size == -1:
+                idx_to_save = 1
+                best_W, best_B = np.zeros(D), remaining_data[0, -1]
+                best_axis_order = remaining_data
+            else:
+                idx_to_save = best_group_size + 1
 
-    print(f"\n[OK] Compilación exitosa en {t:.4f}s")
-    print(f"[INFO] Sectores generados: {len(master_df)}")
-    print(f"[INFO] Tasa de compresión: {((len(df)-len(master_df))/len(df))*100:.2f}%")
-  
+            # Consolidamos el Master Sector
+            sector_data = best_axis_order[:idx_to_save]
+            row = np.concatenate([
+                np.min(sector_data[:, :-1], axis=0),
+                np.max(sector_data[:, :-1], axis=0),
+                best_W, [best_B]
+            ])
+            synthesis_rows.append(row)
+            remaining_data = best_axis_order[idx_to_save:]
+
+        cols = [f'X{i}_min' for i in range(D)] + [f'X{i}_max' for i in range(D)] + \
+               [f'W{i}' for i in range(D)] + ['Bias']
+        self.master_sectors = pd.DataFrame(synthesis_rows, columns=cols)
+        return self.master_sectors, time.perf_counter() - start_time
+
+    def predict(self, X_input):
+        X_input = np.array(X_input)
+        for _, s in self.master_sectors.iterrows():
+            D = (len(s)-1)//3
+            # Verificamos si el punto entra en la caja de este sector
+            if np.all(X_input >= s.iloc[:D].values - 1e-9) and \
+               np.all(X_input <= s.iloc[D:2*D].values + 1e-9):
+                return np.dot(X_input, s.iloc[2*D:3*D].values) + s.iloc[-1]
+        return None
+
+# --- EJECUCIÓN: PRUEBA DE FUEGO ---
+if __name__ == "__main__":
+    print("LUMIN SYNTHESIS v1.4 B: High-Dimensional Segmented Synthesis")
+    D, N = 5, 1000
+    X = np.random.uniform(-10, 10, (N, D))
+
+    # Dos leyes distintas separadas por X1=0
+    Y = np.where(X[:,0] > 0,
+                 5*X[:,0] - 2*X[:,1] + X[:,4] + 10,
+                 -3*X[:,0] + 4*X[:,2] - 0.5*X[:,3] - 5)
+
+    Y += np.random.normal(0, 0.0001, N) # Ruido mínimo
+    df_fire = pd.DataFrame(np.c_[X, Y], columns=[f'X{i+1}' for i in range(D)] + ['Y'])
+
+    epsilon_fire = 0.01
+    compiler = LuminSynthesis(epsilon=epsilon_fire)
+
+    print(f"Iniciando compilación de {N} puntos en {D}D (Epsilon={epsilon_fire})...")
+    master_df, duration = compiler.compile(df_fire)
+
+    print("-" * 50)
+    print(f"Sectores Maestros Deducidos: {len(master_df)}")
+    print(f"Tasa de Compresión: {((N - len(master_df))/N)*100:.2f}%")
+    print(f"Tiempo de Ejecución: {duration:.4f} s")
+    print("-" * 50)
+
+    # Validaciones puntuales
+    p_a = [5, 2, 0, 0, 1]  # Teórico A: 32
+    p_b = [-5, 0, 2, 4, 0] # Teórico B: 16
+
+    print(f"Validación Sector A (X1>0): Real ~32 | Pred: {compiler.predict(p_a)}")
+    print(f"Validación Sector B (X1<0): Real ~16 | Pred: {compiler.predict(p_b)}")

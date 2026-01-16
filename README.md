@@ -25,7 +25,7 @@ EXECUTION TIME: 40.99 ms
 
 ### Quick Start (Nexus)
 ```python
-from slrm_nexus import SLRMNexus
+from nexus_core import SLRMNexus
 import numpy as np
 
 # Initialize for 1000 dimensions
@@ -72,7 +72,7 @@ LATENCY: 89.17 ms
 
 ### Quick Start (Lumin)
 ```python
-from slrm_lumin import SLRMLumin
+from lumin_core import SLRMLumin
 import numpy as np
 
 # Initialize for 1000 dimensions

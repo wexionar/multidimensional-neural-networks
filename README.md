@@ -185,8 +185,8 @@ Both engines are built on top of NumPy and Scipy, ensuring high-speed matrix ope
 * `lumin_core.py`: Core engine for Simplex Sectoring (Part B).
 * `lumin_memory.py`: Persistent storage and fast recall for Lumin (Annex B).
 * `lumin_to_relu.py`: Identity bridge to Neural Network format (Part C).
-* `lumin_synthesis.py`: High-dimensional Knowledge Compiler (Part D).
-* `lumin_resolution.py`: Ultra-fast vectorized Inference Engine (Part E).
+* `lumin_synthesis.py`: High-dimensional Knowledge Compiler (Part E).
+* `lumin_resolution.py`: Ultra-fast vectorized Inference Engine (Part F).
 
 ### Experimental Lab
 * `/demos`: Ready-to-run benchmarks (Python & Jupyter Notebooks) showcasing SLRM-nD vs. the Curse of Dimensionality.
@@ -205,7 +205,7 @@ If you find SLRM-nD helpful in your research, please cite it as:
   year = {2026},
   publisher = {GitHub},
   journal = {GitHub repository},
-  url = {[https://github.com/wexionar/multi-dimensional-neural-networks](https://github.com/wexionar/multi-dimensional-neural-networks)}
+  url = {https://github.com/wexionar/multi-dimensional-neural-networks}
 }
 ```
 

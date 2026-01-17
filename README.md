@@ -158,7 +158,7 @@ Both engines are built on top of NumPy and Scipy, ensuring high-speed matrix ope
 ### Performance (50D Galactic Demo)
 * **Latency:** < 1ms (Vectorized NumPy execution).
 * **Predictability:** Returns `None` if the point is in the "Void," ensuring 100% intellectual integrity (no hallucinations).
-* **Zero Fricción:** No heavy weights or neurons to load; only a lightweight table of geometric coefficients.
+* **Zero Friction:** No heavy weights or neurons to load; only a lightweight table of geometric coefficients.
 
 ---
 

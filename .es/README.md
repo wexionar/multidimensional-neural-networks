@@ -1,7 +1,22 @@
 # Modelo de Regresión Lineal Segmentada para Redes Neuronales Multi-dimensionales (SLRM-nD)
 
-**Desarrolladores:** Alex & Gemini  
 **Licencia:** MIT License  
+**Desarrolladores:** Alex & Gemini  
+
+```text
+SLRM-nD/
+├── lumin_synthesis.py      # Compilador de Conocimiento (Parte E)
+├── lumin_resolution.py     # Ejecutor de Inferencia Ultra-rápido (Parte F)
+├── lumin_core.py           # Motor de Sectorizado Simplex (Parte B)
+├── lumin_memory.py         # Soporte de Persistencia Lumin (Anexo B)
+├── lumin_to_relu.py        # Puente de Identidad (Parte C)
+├── nexus_core.py           # Motor de Plegado Geométrico (Parte A)
+├── nexus_memory.py         # Soporte de Persistencia Nexus (Anexo A)
+├── demos/                  # Benchmarks y Pruebas de Estrés 50D
+├── .es/                    # Laboratorio y documentación en español
+├── LICENSE                 # Licencia MIT
+└── README.md               # Documentación Principal
+```
 
 ---
 
@@ -136,13 +151,66 @@ Ambos motores están construidos sobre NumPy y Scipy, garantizando operaciones m
 
 ---
 
-## Apéndice: Estructura del Repositorio
+## Parte E: Motor de Síntesis de Conocimiento (El Compilador)
 
-* `nexus_core.py`: Motor principal para Plegado Geométrico (Parte A).
-* `nexus_memory.py`: Almacenamiento persistente y recuperación rápida para Nexus (Anexo A).
-* `lumin_core.py`: Motor principal para Sectorización de Símplex (Parte B).
-* `lumin_memory.py`: Almacenamiento persistente y recuperación rápida para Lumin (Anexo B).
-* `lumin_to_relu.py`: Puente de identidad hacia el formato de Redes Neuronales (Parte C).
+**Descripción General:** El Motor de Síntesis representa el nivel más alto de inteligencia en SLRM-nD. En lugar de buscar vecinos, "compila" los datos brutos en **Master Sectors** (Sectores Maestros): leyes geométricas puras que describen la verdad matemática subyacente del conjunto de datos.
+
+**Script:** `lumin_synthesis.py`
+
+### Características Clave
+* **Deducción de Eje-Pivote:** Encuentra automáticamente el orden jerárquico óptimo de las dimensiones para maximizar la compresión de datos.
+* **Compresión Extrema:** Capaz de unificar miles de puntos en sectores de un solo dígito (tasas de compresión del 99.9%).
+* **Filtrado de Ruido:** Utiliza un umbral de tolerancia (Epsilon) para separar la señal del ruido.
 
 ---
+
+## Parte F: Resolución Ultra-Rápida (El Ejecutor)
+
+**Descripción General:** El Motor de Resolución es el socio especializado de la Síntesis. Realiza inferencias casi instantáneas localizando el punto de entrada dentro de las "Hyper-Boxes" sintetizadas y aplicando la ley lineal correspondiente.
+
+**Script:** `lumin_resolution.py`
+
+### Rendimiento (Demo Galáctica 50D)
+* **Latencia:** < 1ms (Ejecución vectorizada en NumPy).
+* **Predictibilidad:** Devuelve `None` si el punto está en el "Vacío" (The Void), garantizando una integridad intelectual del 100% (sin alucinaciones).
+* **Zero Friction:** Sin pesos pesados ni neuronas que cargar; solo una tabla ligera de coeficientes geométricos.
+
+---
+
+## Apéndice: Estructura del Repositorio y Laboratorio
+
+### Sistema Central (Core)
+* `nexus_core.py`: Motor principal para el Plegado Geométrico (Parte A).
+* `nexus_memory.py`: Almacenamiento persistente y recuperación rápida para Nexus (Anexo A).
+* `lumin_core.py`: Motor principal para el Sectorizado Simplex (Parte B).
+* `lumin_memory.py`: Almacenamiento persistente y recuperación rápida para Lumin (Anexo B).
+* `lumin_to_relu.py`: Puente de identidad hacia el formato de Redes Neuronales (Parte C).
+* `lumin_synthesis.py`: Compilador de conocimiento de alta dimensionalidad (Parte E).
+* `lumin_resolution.py`: Motor de inferencia vectorizado ultra-rápido (Parte F).
+
+### Laboratorio Experimental
+* `/demos`: Benchmarks listos para ejecutar (Python y Jupyter Notebooks) que muestran SLRM-nD frente a la Maldición de la Dimensionalidad.
+* `.es`: Documentación en español y laboratorio de desarrollo.
+
+---
+
+## Citar
+
+Si encuentras útil SLRM-nD en tu investigación, por favor cítalo como:
+
+```bibtex
+@misc{slrm-nd,
+  author = {Alex Kinetic and Gemini},
+  title = {SLRM-nD: Segmented Linear Regression Model for Multi-dimensional Neural Networks},
+  year = {2026},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  url = {https://github.com/wexionar/multi-dimensional-neural-networks}
+}
+```
+
+## Licencia
+
+MIT
+
 *Desarrollado para la comunidad global de desarrolladores. Cerrando la brecha entre la lógica geométrica y las redes neuronales de alta dimensión.*

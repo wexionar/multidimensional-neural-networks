@@ -136,13 +136,46 @@ Both engines are built on top of NumPy and Scipy, ensuring high-speed matrix ope
 
 ---
 
-## Appendix: Repository Structure
+## Part E: Knowledge Synthesis Engine (The Compiler)
 
+**Overview:** The Synthesis Engine represents the highest level of intelligence in SLRM-nD. Instead of searching for neighbors, it "compiles" raw data into **Master Sectors**—pure geometric laws that describe the underlying mathematical truth of the dataset.
+
+**Script:** `lumin_synthesis.py`
+
+### Key Features
+* **Axis-Pivot Deduction:** Automatically finds the optimal hierarchical order of dimensions to maximize data compression.
+* **Extreme Compression:** Capable of unifying thousands of points into single-digit sectors (99.9% compression rates).
+* **Noise Filtering:** Uses an Epsilon-tolerance threshold to separate signal from noise.
+
+---
+
+## Part F: Ultra-Fast Resolution (The Executor)
+
+**Overview:** The Resolution Engine is the specialized partner of Synthesis. It performs near-instantaneous inference by locating the input point within the synthesized "Hyper-Boxes" and applying the corresponding linear law.
+
+**Script:** `lumin_resolution.py`
+
+### Performance (50D Galactic Demo)
+* **Latency:** < 1ms (Vectorized NumPy execution).
+* **Predictability:** Returns `None` if the point is in the "Void," ensuring 100% intellectual integrity (no hallucinations).
+* **Zero Fricción:** No heavy weights or neurons to load; only a lightweight table of geometric coefficients.
+
+---
+
+## Appendix: Repository Structure & Lab
+
+### Core System
 * `nexus_core.py`: Core engine for Geometric Folding (Part A).
 * `nexus_memory.py`: Persistent storage and fast recall for Nexus (Annex A).
 * `lumin_core.py`: Core engine for Simplex Sectoring (Part B).
 * `lumin_memory.py`: Persistent storage and fast recall for Lumin (Annex B).
 * `lumin_to_relu.py`: Identity bridge to Neural Network format (Part C).
+* `lumin_synthesis.py`: High-dimensional Knowledge Compiler (Part D).
+* `lumin_resolution.py`: Ultra-fast vectorized Inference Engine (Part E).
+
+### Experimental Lab
+* `/demos`: Ready-to-run benchmarks (Python & Jupyter Notebooks) showcasing SLRM-nD vs. the Curse of Dimensionality.
+* `.es`: Spanish documentation and development laboratory.
 
 ---
 *Developed for the global developer community. Bridging the gap between geometric logic and high-dimensional Neural Networks.*

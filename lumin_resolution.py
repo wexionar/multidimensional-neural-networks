@@ -1,96 +1,96 @@
 # =============================================================
-# LUMIN-RESOLUTION: nD Inference Engine (v1.4 B)
+# LUMIN-RESOLUTION: nD Inference Engine (v1.4 C)
 # =============================================================
 # Project: SLRM-nD (Lumin Core)
 # Developers: Alex Kinetic & Gemini
 # License: MIT License
-# Date: 2026-01-16
-# Description: Ultra-fast inference engine using Bounding Box 
-#              logic for Master Sector inclusion.
+# Description: Batch-optimized inference engine with Bounding Box
+# logic. Supports single-point and matrix-based resolution.
 # =============================================================
 
 import numpy as np
 import pandas as pd
+import time
 
 class LuminResolution:
     """
     Resolution Engine.
-    Uses vectorization to find the corresponding Master Sector
-    and computes the linear law instantly.
+    Vectorized to find Master Sectors and compute laws for
+    single points or massive batches.
     """
-    def __init__(self, master_sectors_path=None):
+    def __init__(self, sectors_df=None):
         self.sectors = None
         self.D = 0
-        if master_sectors_path:
-            self.load_sectors(master_sectors_path)
+        if sectors_df is not None:
+            self.set_sectors(sectors_df)
 
-    def load_sectors(self, path):
-        """Loads synthesized sectors from a CSV file."""
-        df = pd.read_csv(path)
+    def set_sectors(self, df):
+        """Injects sectors and prepares internal matrices."""
         self.sectors = df.values
         # D is (total_columns - 1) / 3 -> [mins, maxs, weights] + 1 bias
         self.D = (self.sectors.shape[1] - 1) // 3
-        
-    def set_sectors_from_df(self, df):
-        """Allows direct injection of a DataFrame."""
-        self.sectors = df.values
-        self.D = (self.sectors.shape[1] - 1) // 3
+
+        # Pre-separate to avoid repetitive slicing in the loop
+        self.mins = self.sectors[:, :self.D]
+        self.maxs = self.sectors[:, self.D:2*self.D]
+        self.weights = self.sectors[:, 2*self.D:3*self.D]
+        self.biases = self.sectors[:, -1]
 
     def resolve(self, X_input):
         """
-        Core Inference: Finds the sector and applies the law.
-        Uses NumPy broadcasting for maximum speed.
+        Main Resolver (Batch Support).
+        X_input can be a list [x1, x2...] or a matrix [[x1, x2...], [...]]
         """
         if self.sectors is None:
-            raise ValueError("No sectors loaded. Compile or load data first.")
+            raise ValueError("No sectors loaded.")
 
-        X = np.array(X_input)
-        
-        # 1. Extract Bounds (Mins and Maxs)
-        mins = self.sectors[:, :self.D]
-        maxs = self.sectors[:, self.D:2*self.D]
-        
-        # 2. Bounding Box Check (Vectorized)
-        # Numerical stability epsilon added for floating point comparisons
-        inside = np.all((X >= mins - 1e-9) & (X <= maxs + 1e-9), axis=1)
-        
-        # 3. Filter candidate sectors
-        candidate_indices = np.where(inside)[0]
-        
-        if len(candidate_indices) == 0:
-            return None # Unknown territory (The Void)
-        
-        # 4. Compute Linear Law (Deterministic execution)
-        idx = candidate_indices[0]
-        weights = self.sectors[idx, 2*self.D:3*self.D]
-        bias = self.sectors[idx, -1]
-        
-        return np.dot(X, weights) + bias
+        # Convert to 2D for uniform handling
+        X = np.atleast_2d(X_input)
+        results = np.full(X.shape[0], None) # 'None' for the empty space (The Void)
 
-# --- DEMO: RESOLUTION SPEED TEST ---
+        # Optimized inference
+        for i, point in enumerate(X):
+            # Verify inclusion in all hyperboxes at once
+            inside = np.all((point >= self.mins - 1e-9) & (point <= self.maxs + 1e-9), axis=1)
+            candidate_indices = np.where(inside)[0]
+
+            if len(candidate_indices) > 0:
+                # If there is overlap, the first one is the owner (v1.4C logic)
+                idx = candidate_indices[0]
+                results[i] = np.dot(point, self.weights[idx]) + self.biases[idx]
+
+        # If a single point was entered, return a scalar value, otherwise an array
+        return results[0] if len(results) == 1 else results
+
+# --- STRESS TEST: BATCH RESOLUTION ---
 if __name__ == "__main__":
-    print("🚀 LUMIN-RESOLUTION: Testing Instant Inference...")
+    print("🚀 LUMIN-RESOLUTION v1.4C: Batch Processing Test")
+
+    # 1. Simulate master sectors (e.g., Law Y = 2*X1 + 5)
+    # 50 Dimensions, only 1 Master Sector for the test
+    D_test = 50
+    mock_row = np.concatenate([
+        np.full(D_test, -10), # mins
+        np.full(D_test, 10),  # maxs
+        np.full(D_test, 2),   # weights (W1...W50 = 2)
+        [5]                   # bias
+    ])
+
+    df_mock = pd.DataFrame([mock_row])
+    resolver = LuminResolution(df_mock)
+
+    # 2. Generate a massive batch of points to resolve (10,000 points in 50D)
+    N_batch = 10000
+    batch_points = np.random.uniform(-5, 5, (N_batch, D_test))
+
+    print(f"Resolving {N_batch} points in {D_test}D...")
+    start = time.perf_counter()
+    results = resolver.resolve(batch_points)
+    end = time.perf_counter()
+
+    print("-" * 50)
+    print(f"Total time: {end - start:.4f} s")
+    print(f"Speed: {N_batch / (end - start):.2f} pts/sec")
+    print(f"Result Example (Point 0): {results[0]}")
+    print("-" * 50)
     
-    # Mock data to simulate a Master Sector (Law: Y = X1 + X2 + 10)
-    # Format: [MinX1, MinX2, MaxX1, MaxX2, W1, W2, Bias]
-    mock_data = {
-        'X0_min': [0], 'X1_min': [0],
-        'X0_max': [10], 'X1_max': [10],
-        'W0': [1], 'W1': [1],
-        'Bias': [10]
-    }
-    df_mock = pd.DataFrame(mock_data)
-    
-    resolver = LuminResolution()
-    resolver.set_sectors_from_df(df_mock)
-    
-    test_point = [5, 5]
-    result = resolver.resolve(test_point)
-    
-    print(f"Point: {test_point}")
-    print(f"Resolved Value: {result} (Expected: 20)")
-    
-    # Testing "The Void" (Out of bounds)
-    void_point = [15, 15]
-    print(f"Void Point: {void_point} -> Result: {resolver.resolve(void_point)}")
-  

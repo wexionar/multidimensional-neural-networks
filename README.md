@@ -1,7 +1,22 @@
 # Segmented Linear Regression Model for Multi-dimensional Neural Networks (SLRM-nD)
 
-**Developers:** Alex & Gemini  
 **License:** MIT License  
+**Developers:** Alex & Gemini  
+
+```text
+SLRM-nD/
+├── lumin_synthesis.py      # Knowledge Compiler (Part E)
+├── lumin_resolution.py     # Ultra-fast Inference Executor (Part F)
+├── lumin_core.py           # Simplex Sectoring Engine (Part B)
+├── lumin_memory.py         # Lumin Persistence Support (Annex B)
+├── lumin_to_relu.py        # Identity Bridge (Part C)
+├── nexus_core.py           # Geometric Folding Engine (Part A)
+├── nexus_memory.py         # Nexus Persistence Support (Annex A)
+├── demos/                  # Benchmarks & 50D Stress Tests
+├── .es/                    # Spanish lab & documentation
+├── LICENSE                 # MIT License
+└── README.md               # Main Documentation
+```
 
 ---
 
@@ -178,4 +193,25 @@ Both engines are built on top of NumPy and Scipy, ensuring high-speed matrix ope
 * `.es`: Spanish documentation and development laboratory.
 
 ---
+
+## Cite
+
+If you find SLRM-nD helpful in your research, please cite it as:
+
+```bibtex
+@misc{slrm-nd,
+  author = {Alex Kinetic and Gemini},
+  title = {SLRM-nD: Segmented Linear Regression Model for Multi-dimensional Neural Networks},
+  year = {2026},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  url = {[https://github.com/wexionar/multi-dimensional-neural-networks](https://github.com/wexionar/multi-dimensional-neural-networks)}
+}
+```
+
+## License
+
+MIT
+
+
 *Developed for the global developer community. Bridging the gap between geometric logic and high-dimensional Neural Networks.*

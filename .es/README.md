@@ -166,14 +166,29 @@ Ambos motores están construidos sobre NumPy y Scipy, garantizando operaciones m
 
 ## Parte F: Resolución Ultra-Rápida (El Ejecutor)
 
-**Descripción General:** El Motor de Resolución es el socio especializado de la Síntesis. Realiza inferencias casi instantáneas localizando el punto de entrada dentro de las "Hyper-Boxes" sintetizadas y aplicando la ley lineal correspondiente.
+**Resumen:** El Motor de Resolución es el socio especializado de Synthesis. Realiza inferencias casi instantáneas al localizar el punto de entrada dentro de las "Hiper-Cajas" sintetizadas y aplicar la ley lineal correspondiente.
 
 **Script:** `lumin_resolution.py`
 
-### Rendimiento (Demo Galáctica 50D)
-* **Latencia:** < 1ms (Ejecución vectorizada en NumPy).
-* **Predictibilidad:** Devuelve `None` si el punto está en el "Vacío" (The Void), garantizando una integridad intelectual del 100% (sin alucinaciones).
-* **Zero Friction:** Sin pesos pesados ni neuronas que cargar; solo una tabla ligera de coeficientes geométricos.
+### Rendimiento (Test de Estrés 50D)
+* **Capacidad de procesamiento:** ~68,210 pts/seg (CPU única).
+* **Latencia:** < 0.15s para 10,000 puntos.
+* **Predictibilidad:** Devuelve `None` si el punto está en "El Vacío" (The Void), garantizando un 100% de integridad intelectual (sin alucinaciones).
+* **Cero Fricción:** Sin pesos pesados ni tensores; solo una tabla ligera de coeficientes geométricos.
+
+---
+
+## Parte G: Modos de Operación y Selección Estratégica
+
+SLRM-nD se adapta a tu hardware y a la volatilidad de tus datos. Usa esta guía para elegir tu motor:
+
+| Escenario | Script Recomendado | Modo | Lógica |
+| :--- | :--- | :--- | :--- |
+| **Datos Volátiles / Tiempo Real** | `lumin_core.py` | **Directo** | Sin compilación. Ideal cuando la "verdad" de los datos cambia constante. |
+| **Big Data / Altas Dimensiones** | `lumin_synthesis.py` | **Compilador** | Paga un costo único (Synthesis) para obtener respuestas instantáneas de por vida. |
+| **Dispositivos Edge / Embebidos** | `lumin_resolution.py` | **Reflejo** | Huella de RAM ultra-baja usando Sectores Maestros pre-compilados. |
+
+**Pro-Tip:** Si tu conjunto de datos es disperso pero estable (como leyes históricas del mercado o constantes físicas), usa siempre **Synthesis + Resolution**. Si estás procesando un flujo en vivo de señales impredecibles, quédate con **Lumin/Nexus Core**.
 
 ---
 

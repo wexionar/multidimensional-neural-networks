@@ -170,10 +170,25 @@ Both engines are built on top of NumPy and Scipy, ensuring high-speed matrix ope
 
 **Script:** `lumin_resolution.py`
 
-### Performance (50D Galactic Demo)
-* **Latency:** < 1ms (Vectorized NumPy execution).
-* **Predictability:** Returns `None` if the point is in the "Void," ensuring 100% intellectual integrity (no hallucinations).
-* **Zero Friction:** No heavy weights or neurons to load; only a lightweight table of geometric coefficients.
+### Performance (50D Stress Test)
+* **Throughput:** ~68,210 pts/sec (Single CPU).
+* **Latency:** < 0.15s for 10,000 points.
+* **Predictability:** Returns `None` if the point is in "The Void," ensuring 100% intellectual integrity (no hallucinations).
+* **Zero Friction:** No heavy weights or tensors; only a lightweight table of geometric coefficients.
+
+---
+
+## Part G: Operating Modes & Strategic Selection
+
+SLRM-nD adapts to your hardware and data volatility. Use this guide to choose your engine:
+
+| Scenario | Recommended Script | Mode | Logic |
+| :--- | :--- | :--- | :--- |
+| **Real-Time / Volatile Data** | `lumin_core.py` | **Direct** | No compilation. Best when data "truth" changes constantly. |
+| **Big Data / High-Dimensions** | `lumin_synthesis.py` | **Compiler** | Pay a one-time cost (Synthesis) for a lifetime of instant answers. |
+| **Edge / Embedded Devices** | `lumin_resolution.py` | **Reflex** | Ultra-low RAM footprint using pre-compiled Master Sectors. |
+
+**Pro-Tip:** If your dataset is sparse but stable (like historical market laws or physical constants), always use **Synthesis + Resolution**. If you are processing a live stream of unpredictable signals, stay with **Lumin/Nexus Core**.
 
 ---
 

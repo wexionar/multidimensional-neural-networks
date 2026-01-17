@@ -184,7 +184,7 @@ SLRM-nD se adapta a tu hardware y a la volatilidad de tus datos. Usa esta guía 
 
 | Escenario | Script Recomendado | Modo | Lógica |
 | :--- | :--- | :--- | :--- |
-| **Datos Volátiles / Tiempo Real** | `lumin_core.py` | **Directo** | Sin compilación. Ideal cuando la "verdad" de los datos cambia constante. |
+| **Datos Volátiles / Tiempo Real** | `lumin_core.py` | **Directo** | Sin compilación. Ideal cuando la "verdad" de los datos cambian constantemente. |
 | **Big Data / Altas Dimensiones** | `lumin_synthesis.py` | **Compilador** | Paga un costo único (Synthesis) para obtener respuestas instantáneas de por vida. |
 | **Dispositivos Edge / Embebidos** | `lumin_resolution.py` | **Reflejo** | Huella de RAM ultra-baja usando Sectores Maestros pre-compilados. |
 

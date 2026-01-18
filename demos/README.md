@@ -28,9 +28,6 @@ Traditional neural networks and clustering algorithms often struggle with the "C
 3. The system will generate a synthetic 50D dataset, compile it, and validate the compression success.
 
 ---
-**Note:** These demos are optimized for both Google Colab and local environments. The architecture ensures that **Inference (Resolution)** remains near-instantaneous once the synthesis is complete.
-
----
 
 ## 🚀 Demo 002: Non-Linearity & Integrity Check (20D)
 This test evaluates the compiler's ability to approximate non-linear curves (parabolas) using piecewise linear sectors and verifies the **Anti-Hallucination** (The Void) logic.
@@ -51,4 +48,6 @@ Real-world data is rarely perfectly linear. **Lumin-Synthesis** demonstrates how
 ### 🛠️ How to run
 ```bash
 python 002_non_linear_stress_test_20D.py
-```bash
+```
+---
+**Note:** These demos are optimized for both Google Colab and local environments. The architecture ensures that **Inference (Resolution)** remains near-instantaneous once the synthesis is complete.

@@ -5,11 +5,12 @@
 
 ```text
 SLRM-nD/
+├── lumin_origin.py         # Dynamic Ingestion & Sensory System (Part H)
 ├── lumin_synthesis.py      # Knowledge Compiler (Part E)
 ├── lumin_resolution.py     # Ultra-fast Inference Executor (Part F)
+├── lumin_to_relu.py        # Identity Bridge (Part C)
 ├── lumin_core.py           # Simplex Sectoring Engine (Part B)
 ├── lumin_memory.py         # Lumin Persistence Support (Annex B)
-├── lumin_to_relu.py        # Identity Bridge (Part C)
 ├── nexus_core.py           # Geometric Folding Engine (Part A)
 ├── nexus_memory.py         # Nexus Persistence Support (Annex A)
 ├── demos/                  # Benchmarks & 50D Stress Tests
@@ -188,20 +189,42 @@ SLRM-nD adapts to your hardware and data volatility. Use this guide to choose yo
 | **Big Data / High-Dimensions** | `lumin_synthesis.py` | **Compiler** | Pay a one-time cost (Synthesis) for a lifetime of instant answers. |
 | **Edge / Embedded Devices** | `lumin_resolution.py` | **Reflex** | Ultra-low RAM footprint using pre-compiled Master Sectors. |
 
+### **The "Evolutionary Pipeline" (Origin + Resolution)**
+This is the most advanced way to use SLRM-nD. Instead of a heavy batch compilation, use **Origin** to build the map while data arrives, and hot-swap the `master_df` into **Resolution** for instant deployment.
+
+* **Best for:** High-frequency trading, real-time sensor monitoring, and adaptive AI systems.
+* **Advantage:** Zero-training downtime. The system learns and executes in parallel.
+
 **Pro-Tip:** If your dataset is sparse but stable (like historical market laws or physical constants), always use **Synthesis + Resolution**. If you are processing a live stream of unpredictable signals, stay with **Lumin/Nexus Core**.
+
+---
+
+## Part H: Evolutionary Synergy (The Fast-Track)
+
+The true power of SLRM-nD lies in the direct communication between **Origin** and **Resolution**.
+
+1. **Origin** acts as the *Sensory System*, detecting structure and "mitosis" points in live data.
+2. **Resolution** acts as the *Motor System*, executing the synthesized laws at ultra-high speeds.
+
+**Live Benchmark (10D):**
+* **Learning Speed:** ~480+ pts/sec (Continuous Structural Growth).
+* **Execution Speed:** ~58,000+ pts/sec (Real-time Inference).
+
+*Conclusion: This synergy allows for a "Living AI" that adapts its internal geometry while maintaining industrial-grade response times.*
 
 ---
 
 ## Appendix: Repository Structure & Lab
 
 ### Core System
-* `nexus_core.py`: Core engine for Geometric Folding (Part A).
-* `nexus_memory.py`: Persistent storage and fast recall for Nexus (Annex A).
-* `lumin_core.py`: Core engine for Simplex Sectoring (Part B).
-* `lumin_memory.py`: Persistent storage and fast recall for Lumin (Annex B).
-* `lumin_to_relu.py`: Identity bridge to Neural Network format (Part C).
+* `lumin_origin.py`: Dynamic Ingestion & Sensory System (Part H).
 * `lumin_synthesis.py`: High-dimensional Knowledge Compiler (Part E).
 * `lumin_resolution.py`: Ultra-fast vectorized Inference Engine (Part F).
+* `lumin_to_relu.py`: Identity bridge to Neural Network format (Part C).
+* `lumin_core.py`: Core engine for Simplex Sectoring (Part B).
+* `lumin_memory.py`: Persistent storage and fast recall for Lumin (Annex B).
+* `nexus_core.py`: Core engine for Geometric Folding (Part A).
+* `nexus_memory.py`: Persistent storage and fast recall for Nexus (Annex A).
 
 ### Experimental Lab
 * `/demos`: Ready-to-run benchmarks (Python & Jupyter Notebooks) showcasing SLRM-nD vs. the Curse of Dimensionality.

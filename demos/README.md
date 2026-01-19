@@ -51,6 +51,23 @@ Real-world data is rarely perfectly linear. This demo shows how the engine "carv
   ```bash
   python 002_non_linear_stress_test_20D.py
   ```
+---
 
+### 🚀 Demo 003: The Evolutionary Pipeline (Origin + Resolution)
+
+**Description:** This demo showcases the high-speed bridge between **Lumin-Origin** and **Lumin-Resolution**. It simulates a live 10-Dimensional environment where the system learns the underlying mathematical laws on the fly and immediately provides a high-throughput inference service.
+
+**Key Prototypical Benchmarks:**
+* **Sensory Phase (Origin):** Automates the detection of "reality fractures" (sectoring) during live data ingestion.
+* **Motor Phase (Resolution):** Executes pre-compiled laws at ultra-high speeds.
+* **Measured Throughput:** ~66,000+ pts/sec (on standard single-CPU).
+
+**Goal:** To prove that SLRM-nD can maintain 100% precision and zero-training downtime even in volatile, high-dimensional data streams.
+
+### 🛠️ How to run
+* **Local Script:**
+  ```bash
+  python 003_evolutionary_pipeline_10D.py
+  ```
 ---
 **Note:** These demos are optimized for both Google Colab and local environments. For deep technical insights into the v1.4 C kernel, refer to the core documentation in the root folder.

@@ -60,7 +60,7 @@ Real-world data is rarely perfectly linear. This demo shows how the engine "carv
 **Key Prototypical Benchmarks:**
 * **Sensory Phase (Origin):** Automates the detection of "reality fractures" (sectoring) during live data ingestion.
 * **Motor Phase (Resolution):** Executes pre-compiled laws at ultra-high speeds.
-* **Measured Throughput:** ~66,000+ pts/sec (on standard single-CPU).
+* **Measured Throughput:** ~58,000+ pts/sec (on standard single-CPU).
 
 **Goal:** To prove that SLRM-nD can maintain 100% precision and zero-training downtime even in volatile, high-dimensional data streams.
 

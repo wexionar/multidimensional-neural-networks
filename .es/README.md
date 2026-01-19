@@ -5,11 +5,12 @@
 
 ```text
 SLRM-nD/
+├── lumin_origin.py         # Ingesta Dinámica y Sistema Sensorial (Parte H)
 ├── lumin_synthesis.py      # Compilador de Conocimiento (Parte E)
 ├── lumin_resolution.py     # Ejecutor de Inferencia Ultra-rápido (Parte F)
+├── lumin_to_relu.py        # Puente de Identidad (Parte C)
 ├── lumin_core.py           # Motor de Sectorizado Simplex (Parte B)
 ├── lumin_memory.py         # Soporte de Persistencia Lumin (Anexo B)
-├── lumin_to_relu.py        # Puente de Identidad (Parte C)
 ├── nexus_core.py           # Motor de Plegado Geométrico (Parte A)
 ├── nexus_memory.py         # Soporte de Persistencia Nexus (Anexo A)
 ├── demos/                  # Benchmarks y Pruebas de Estrés 50D
@@ -180,28 +181,50 @@ Ambos motores están construidos sobre NumPy y Scipy, garantizando operaciones m
 
 ## Parte G: Modos de Operación y Selección Estratégica
 
-SLRM-nD se adapta a tu hardware y a la volatilidad de tus datos. Usa esta guía para elegir tu motor:
+SLRM-nD se adapta a su hardware y a la volatilidad de sus datos. Use esta guía para elegir su motor:
 
 | Escenario | Script Recomendado | Modo | Lógica |
 | :--- | :--- | :--- | :--- |
-| **Datos Volátiles / Tiempo Real** | `lumin_core.py` | **Directo** | Sin compilación. Ideal cuando la "verdad" de los datos cambian constantemente. |
-| **Big Data / Altas Dimensiones** | `lumin_synthesis.py` | **Compilador** | Paga un costo único (Synthesis) para obtener respuestas instantáneas de por vida. |
-| **Dispositivos Edge / Embebidos** | `lumin_resolution.py` | **Reflejo** | Huella de RAM ultra-baja usando Sectores Maestros pre-compilados. |
+| **Datos en Tiempo Real / Volátiles** | `lumin_core.py` | **Directo** | Sin compilación. Ideal cuando la "verdad" de los datos cambia constantemente. |
+| **Big Data / Altas Dimensiones** | `lumin_synthesis.py` | **Compilador** | Pague un costo único (Síntesis) para obtener una vida de respuestas instantáneas. |
+| **Dispositivos Edge / Embebidos** | `lumin_resolution.py` | **Reflejo** | Huella de RAM ultra-baja utilizando Sectores Maestros pre-compilados. |
 
-**Pro-Tip:** Si tu conjunto de datos es disperso pero estable (como leyes históricas del mercado o constantes físicas), usa siempre **Synthesis + Resolution**. Si estás procesando un flujo en vivo de señales impredecibles, quédate con **Lumin/Nexus Core**.
+### **El "Pipeline Evolutivo" (Origin + Resolution)**
+Esta es la forma más avanzada de utilizar SLRM-nD. En lugar de una compilación pesada por lotes (batch), utiliza **Origin** para construir el mapa mientras los datos llegan, e intercambia en caliente el `master_df` hacia **Resolution** para un despliegue instantáneo.
+
+* **Ideal para:** Trading de alta frecuencia, monitoreo de sensores en tiempo real y sistemas de IA adaptativos.
+* **Ventaja:** Tiempo de inactividad de entrenamiento cero. El sistema aprende y ejecuta en paralelo.
+
+**Consejo Profesional:** Si su conjunto de datos es disperso pero estable (como leyes de mercados históricos o constantes físicas), use siempre **Synthesis + Resolution**. Si está procesando un flujo de señales impredecibles en vivo, manténgase con **Lumin/Nexus Core**.
+
+---
+
+## Parte H: Sinergia Evolutiva (La Vía Rápida)
+
+El verdadero poder de SLRM-nD reside en la comunicación directa entre **Origin** y **Resolution**.
+
+1. **Origin** actúa como el *Sistema Sensorial*, detectando estructuras y puntos de "mitosis" en flujos de datos en vivo.
+2. **Resolution** actúa como el *Sistema Motor*, ejecutando las leyes sintetizadas a velocidades ultra-altas.
+
+**Benchmark en Vivo (10D):**
+* **Velocidad de Aprendizaje:** ~480+ pts/seg (Crecimiento Estructural Continuo).
+* **Velocidad de Ejecución:** ~58,000+ pts/seg (Inferencia en Tiempo Real).
+
+*Conclusión: Esta sinergia permite una "IA Viva" que adapta su geometría interna manteniendo tiempos de respuesta de grado industrial. Es el equilibrio perfecto entre la adaptación en tiempo real y la ejecución de alto rendimiento.*
 
 ---
 
 ## Apéndice: Estructura del Repositorio y Laboratorio
 
 ### Sistema Central (Core)
-* `nexus_core.py`: Motor principal para el Plegado Geométrico (Parte A).
-* `nexus_memory.py`: Almacenamiento persistente y recuperación rápida para Nexus (Anexo A).
-* `lumin_core.py`: Motor principal para el Sectorizado Simplex (Parte B).
-* `lumin_memory.py`: Almacenamiento persistente y recuperación rápida para Lumin (Anexo B).
-* `lumin_to_relu.py`: Puente de identidad hacia el formato de Redes Neuronales (Parte C).
-* `lumin_synthesis.py`: Compilador de conocimiento de alta dimensionalidad (Parte E).
+* `lumin_origin.py`: Ingesta dinámica y Sistema Sensorial (Parte H).
+* `lumin_synthesis.py`: Compilador de conocimiento en altas dimensiones (Parte E).
 * `lumin_resolution.py`: Motor de inferencia vectorizado ultra-rápido (Parte F).
+* `lumin_to_relu.py`: Puente de identidad hacia formato de Redes Neuronales (Parte C).
+* `lumin_core.py`: Motor principal de sectorización Simplex (Parte B).
+* `lumin_memory.py`: Almacenamiento persistente y recuperación rápida para Lumin (Anexo B).
+* `nexus_core.py`: Motor principal de plegado geométrico (Parte A).
+* `nexus_memory.py`: Almacenamiento persistente y recuperación rápida para Nexus (Anexo A).
 
 ### Laboratorio Experimental
 * `/demos`: Benchmarks listos para ejecutar (Python y Jupyter Notebooks) que muestran SLRM-nD frente a la Maldición de la Dimensionalidad.

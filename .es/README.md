@@ -203,7 +203,9 @@ Esta es la forma más avanzada de utilizar SLRM-nD. En lugar de una compilación
 
 El verdadero poder de SLRM-nD reside en la comunicación directa entre **Origin** y **Resolution**.
 
-1. **Origin** actúa como el *Sistema Sensorial*, detectando estructuras y puntos de "mitosis" en flujos de datos en vivo.
+1. **Origin (v1.4)** actúa como el *Sistema Sensorial*, detectando estructuras y puntos de "mitosis" en flujos de datos en vivo.
+   * **Modo 1 (Diversidad):** Seguimiento de alta fidelidad de cada fractura estructural (Continuo).
+   * **Modo 2 (Pureza):** Síntesis de alta velocidad enfocada en leyes geométricas limpias (Independiente).
 2. **Resolution** actúa como el *Sistema Motor*, ejecutando las leyes sintetizadas a velocidades ultra-altas.
 
 **Benchmark en Vivo (10D):**
@@ -251,4 +253,11 @@ Si encuentras útil SLRM-nD en tu investigación, por favor cítalo como:
 
 MIT
 
-*Desarrollado para la comunidad global de desarrolladores. Cerrando la brecha entre la lógica geométrica y las redes neuronales de alta dimensión.*
+---
+
+## Proyecto Prometeo
+SLRM-nD es un marco teórico fundamental entregado a la comunidad de código abierto. Nuestro objetivo es proporcionar el "fuego" de la síntesis geométrica para que los desarrolladores puedan construir, bifurcar (fork) y evolucionar esta lógica de manera independiente (por ejemplo, SLRM-fork). Nosotros establecemos la base; la comunidad global define el horizonte.
+
+---
+
+*Desarrollado para la comunidad global de desarrolladores. Cerrando la brecha entre la lógica geométrica y las Redes Neuronales multidimensionales. Parte de la iniciativa del Proyecto Prometeo.*

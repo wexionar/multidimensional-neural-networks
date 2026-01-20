@@ -203,14 +203,16 @@ This is the most advanced way to use SLRM-nD. Instead of a heavy batch compilati
 
 The true power of SLRM-nD lies in the direct communication between **Origin** and **Resolution**.
 
-1. **Origin** acts as the *Sensory System*, detecting structure and "mitosis" points in live data.
+1. **Origin (v1.4)** acts as the *Sensory System*, detecting structure and "mitosis" points in live data.
+   * **Mode 1 (Diversity):** High-fidelity tracking of every structural fracture (Continuous).
+   * **Mode 2 (Purity):** High-speed synthesis focused on clean geometric laws (Independent).
 2. **Resolution** acts as the *Motor System*, executing the synthesized laws at ultra-high speeds.
 
 **Live Benchmark (10D):**
 * **Learning Speed:** ~480+ pts/sec (Continuous Structural Growth).
 * **Execution Speed:** ~58,000+ pts/sec (Real-time Inference).
 
-*Conclusion: This synergy allows for a "Living AI" that adapts its internal geometry while maintaining industrial-grade response times.*
+*Conclusion: This synergy allows for a "Living AI" that adapts its internal geometry while maintaining industrial-grade response times. It is the perfect balance between real-time adaptation and high-performance execution.*
 
 ---
 
@@ -251,5 +253,12 @@ If you find SLRM-nD helpful in your research, please cite it as:
 
 MIT
 
+---
 
-*Developed for the global developer community. Bridging the gap between geometric logic and high-dimensional Neural Networks.*
+## Project Prometheus
+SLRM-nD is a fundamental theoretical framework delivered to the open-source community. Our goal is to provide the "fire" of geometric synthesis so developers can build, fork, and evolve this logic independently (e.g., SLRM-fork). We establish the base; the global community defines the horizon.
+
+---
+
+*Developed for the global developer community. Bridging the gap between geometric logic and high-dimensional Neural Networks. Part of the Prometheus Project initiative.*
+

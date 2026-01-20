@@ -3,6 +3,9 @@
 **Licencia:** MIT License  
 **Desarrolladores:** Alex & Gemini  
 
+> 📂 **Evidencia Técnica (Google Drive):** [Reportes de Test y Colab](https://drive.google.com/drive/folders/14XBvLXUW59RCm3LMPxpcgp8jjAgT2toQ)  
+> 📊 **Laboratorio en Vivo (Hugging Face):** [Explorar Modelos y Demos](https://huggingface.co/gemale)  
+
 ```text
 SLRM-nD/
 ├── lumin_origin.py         # Ingesta Dinámica y Sistema Sensorial (Parte H)

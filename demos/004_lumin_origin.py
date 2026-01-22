@@ -1,127 +1,117 @@
 # =============================================================
-# LUMIN-DEMO 004: The Symmetric Origin Engine (High-Speed)
+# LUMIN-DEMO 004: The Industrial Origin Engine (High-Speed)
 # =============================================================
 # Project: SLRM-nD (Lumin Core)
 # Developers: Alex Kinetic & Gemini
 # Repository: https://github.com/wexionar/multi-dimensional-neural-networks
 # License: MIT License
 # Date: 2026-01-22
-# Description: High-speed Symmetric Compression Engine.
-#              Implements Max-Abs Scaling and Relative Epsilon
-#              to preserve geometric integrity across nD space.
+# Description: High-speed Symmetric Compression Engine with 
+#              Auto-Sorting and Dual Epsilon Logic.
 # =============================================================
 
 import numpy as np
 import pandas as pd
 import time
 
-def run_origin_004(input_csv, output_npy, epsilon_rel=0.01):
-    print(f"🚀 [LUMIN-ORIGIN 004] Starting compression pipeline...")
+# --- USER CONFIGURATION ---
+EPSILON_VAL = 0.02    # Fracture sensitivity (Gradient/Delta-Y)
+EPSILON_TYPE = 'abs'  # 'abs' (Absolute) | 'rel' (Relative %)
+STRUCT_MODE = 1       # 1: DIVERSITY (Continuous) | 2: PURITY (Isolated)
+PRINT_SUMMARY = 0     # 1: Print sector laws | 0: Silent mode
+# ===========================
 
-    # 1. DATA LOADING
+def run_origin_004(input_csv, output_npy):
+    start_time = time.perf_counter()
+    
+    # 1. DATA LOADING & AUTO-SORTING (Critical Bug Fix)
+    # We ensure X0 is ordered to maintain geometric continuity
     df = pd.read_csv(input_csv)
+    df = df.sort_values(by=df.columns[0]).reset_index(drop=True)
+    
     data = df.values
-    X = data[:, :-1]
-    Y = data[:, -1]
+    X, Y = data[:, :-1], data[:, -1]
     n_rows, n_dims = X.shape
 
-    # 2. SYMMETRIC NORMALIZATION (The Core Principle)
-    # We find the Max Absolute to keep the zero centered
-    max_abs_y = np.max(np.abs(Y))
-    if max_abs_y == 0: max_abs_y = 1.0
-
-    # Work strictly in the [-1, 1] domain
+    # 2. SYMMETRIC NORMALIZATION
+    # Keeps zero-center integrity in [-1, 1] domain
+    max_abs_y = np.max(np.abs(Y)) if np.max(np.abs(Y)) != 0 else 1.0
     Y_norm = Y / max_abs_y
 
-    # 3. COMPRESSION ENGINE (Vectorized logic)
-    # Epsilon is already relative, so 0.01 means 1% of the current normalized value
+    # 3. COMPRESSION ENGINE (Vectorized Logic)
     sectors = []
     start_idx = 0
-    start_time = time.perf_counter()
-
-    print(f"📦 Processing {n_rows} rows in {n_dims}D space...")
 
     while start_idx < n_rows:
         end_idx = start_idx + 1
         found_end = False
-
-        # Initial sector law (from start to the next point)
+        
         while end_idx < n_rows:
-            # Multi-dimensional Linear Interpolation
-            # We predict Y based on the line between start_idx and current end_idx
             if end_idx == start_idx + 1:
                 end_idx += 1
                 continue
-
-            # Current Law Weights (W) and Bias (B)
-            # Y = X*W + B
-            # Simplified for segments:
-            x_start = X[start_idx]
-            x_end = X[end_idx]
-            y_start = Y_norm[start_idx]
-            y_end = Y_norm[end_idx]
-
-            # Check intermediate points
-            test_indices = np.arange(start_idx + 1, end_idx)
-            # Vectorized prediction for all intermediate points
-            # This is where we check if the sector "absorbs" the points
-
-            # Prediction logic (Linear)
-            # t = ratio of distance (0 to 1)
-            # Use only the first dimension for ratio if X is ordered
-            denom = (x_end[0] - x_start[0]) if (x_end[0] - x_start[0]) != 0 else 1.0
-            t = (X[test_indices, 0] - x_start[0]) / denom
-            y_pred = y_start + t * (y_end - y_start)
-
-            errors = np.abs(Y_norm[test_indices] - y_pred)
-            # Dynamic Relative Margin
-            margins = np.abs(Y_norm[test_indices]) * epsilon_rel
-
-            # If any point exceeds its margin, the sector breaks at end_idx - 1
+            
+            # Linear Prediction (Interpolation) between boundaries
+            x_s, x_e = X[start_idx], X[end_idx]
+            y_s, y_e = Y_norm[start_idx], Y_norm[end_idx]
+            
+            test_idx = np.arange(start_idx + 1, end_idx)
+            denom = (x_e[0] - x_s[0]) if (x_e[0] - x_s[0]) != 0 else 1e-9
+            t = (X[test_idx, 0] - x_s[0]) / denom
+            y_pred = y_s + t * (y_e - y_s)
+            
+            # Error Detection (Delta-Y Projection vs Reality)
+            errors = np.abs(Y_norm[test_idx] - y_pred)
+            
+            # Dynamic vs Fixed Margin logic
+            if EPSILON_TYPE == 'rel':
+                margins = np.abs(Y_norm[test_idx]) * EPSILON_VAL
+            else:
+                margins = np.full_like(errors, EPSILON_VAL)
+            
             if np.any(errors > margins):
                 found_end = True
                 break
             else:
                 end_idx += 1
-
-        # Save Sector Data
+        
         actual_end = end_idx - 1 if found_end else n_rows - 1
         if actual_end <= start_idx: actual_end = start_idx + 1
+        
+        # Sector Law Synthesis
+        #mins = np.min(X[start_idx:actual_end+1], axis=0) # (Optional in v4.1 for speed)
+        #maxs = np.max(X[start_idx:actual_end+1], axis=0)
+        mins, maxs = X[start_idx], X[actual_end] # Faster for sorted data
 
-        # Store: Mins, Maxs, Weights (simplified), Bias
-        # [mins(D), maxs(D), weights(D), bias(1)]
-        mins = np.min(X[start_idx:actual_end+1], axis=0)
-        maxs = np.max(X[start_idx:actual_end+1], axis=0)
-
-        # Simple Law Calculation for the sector
-        # (In v4, we use the line between boundaries for the law)
         w = np.zeros(n_dims)
-        denom = (X[actual_end, 0] - X[start_idx, 0])
-        if denom != 0:
-            w[0] = (Y_norm[actual_end] - Y_norm[start_idx]) / denom
+        dist_x = (X[actual_end, 0] - X[start_idx, 0])
+        if dist_x != 0:
+            w[0] = (Y_norm[actual_end] - Y_norm[start_idx]) / dist_x
+            
         bias = Y_norm[start_idx] - w[0] * X[start_idx, 0]
+        
+        if PRINT_SUMMARY:
+            print(f"Sector {len(sectors)}: W0={w[0]:.4f} | Size={actual_end - start_idx}")
 
-        sector_row = np.concatenate([mins, maxs, w, [bias]])
-        sectors.append(sector_row)
+        sectors.append(np.concatenate([mins, maxs, w, [bias]]))
+        
+        # 4. STRUCTURAL FLOW (Diversity vs Purity)
+        start_idx = actual_end if STRUCT_MODE == 1 else actual_end + 1
+        if not found_end or start_idx >= n_rows: break
 
-        start_idx = actual_end
-        if not found_end: break
-
-    # 4. BINARY OUTPUT WITH METADATA HEADER
+    # 5. BINARY EXPORT WITH METADATA
     sectors_matrix = np.array(sectors)
-    # Metadata Row: [MaxAbs, 0, 0, ... 0]
     metadata = np.zeros(sectors_matrix.shape[1])
     metadata[0] = max_abs_y
-
-    final_output = np.vstack([metadata, sectors_matrix])
-    np.save(output_npy, final_output)
-
-    total_time = time.perf_counter() - start_time
-    print(f"✅ Finished. Sectors created: {len(sectors)} | Time: {total_time:.4f}s")
-    print(f"💾 Saved to: {output_npy}")
+    metadata[1] = 1 if EPSILON_TYPE == 'abs' else 0
+    
+    np.save(output_npy, np.vstack([metadata, sectors_matrix]))
+    
+    exec_time = time.perf_counter() - start_time
+    print(f"✅ [LUMIN-ORIGIN 004] Pipeline Finished.")
+    print(f"Sectors: {len(sectors)} | Time: {exec_time:.4f}s")
 
 if __name__ == "__main__":
-    # Test with dummy data or real csv
-    # run_origin_004("input_data.csv", "origin_map.npy")
+    # run_origin_004("input.csv", "output.npy")
     pass
-  
+    

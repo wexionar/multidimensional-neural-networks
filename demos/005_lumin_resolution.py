@@ -9,6 +9,7 @@
 # Description: High-speed vectorized inference engine.
 #              Loads binary maps from Origin 004 and resolves
 #              massive point batches using matrix operations.
+#              Synchronized with 3-point DNA metadata.
 # =============================================================
 
 import numpy as np
@@ -25,7 +26,8 @@ class LuminResolution005:
         # 1. LOAD BINARY DATA
         data = np.load(npy_map_path)
 
-        # 2. EXTRACT METADATA (Row 0 - DNA)
+        # 2. EXTRACT METADATA DNA (Row 0)
+        # Synchronized with Origin 004 Export logic
         self.scale_factor = data[0, 0]
         self.epsilon_type = "ABS" if data[0, 1] == 1 else "REL"
         self.epsilon_val = data[0, 2]
@@ -35,7 +37,6 @@ class LuminResolution005:
 
         # Determine Dimensions (D)
         # Structure is [mins(D), maxs(D), weights(D), bias(1)]
-        # Total columns = 3D + 1 -> D = (cols - 1) / 3
         self.D = (self.sectors.shape[1] - 1) // 3
 
         # Pre-slice matrices for vectorized operations
@@ -45,7 +46,7 @@ class LuminResolution005:
         self.biases = self.sectors[:, -1]
 
         print(f"✅ Map loaded. Dimensions: {self.D}D | Sectors: {len(self.sectors)}")
-        print(f"✅ DNA Sync: Scale={self.scale_factor} | Logic={self.epsilon_type} | Val={self.epsilon_val}")
+        print(f"✅ DNA Sync: Scale={self.scale_factor} | Mode={self.epsilon_type} | Val={self.epsilon_val}")
 
     def resolve(self, X_input):
         """
@@ -76,15 +77,15 @@ class LuminResolution005:
             valid_x = X[has_sector]
             valid_sectors = sector_indices[has_sector]
 
-            # Dot product for each point with its specific sector weights
+            # Linear law execution: Y_norm = XW + B
             y_norm = np.einsum('ij,ij->i', valid_x, self.weights[valid_sectors]) + self.biases[valid_sectors]
 
-            # D) BACK TO REALITY (Scale Recovery using DNA)
+            # D) BACK TO REALITY (Scale Recovery using DNA Row)
             results[has_sector] = y_norm * self.scale_factor
 
         return results
 
-# --- STRESS TEST EXAMPLE ---
 if __name__ == "__main__":
+    # Integration Placeholder
     pass
     

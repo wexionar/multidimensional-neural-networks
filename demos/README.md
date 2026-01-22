@@ -70,4 +70,36 @@ Real-world data is rarely perfectly linear. This demo shows how the engine "carv
   python 003_evolutionary_pipeline_10D.py
   ```
 ---
+
+# 🚀 Demo 004: Industrial Scale & Range Resilience (1M Points)
+
+This laboratory focuses on the structural maturation of the **LuminOrigin** engine, moving from basic prototyping to industrial-grade data synthesis. Demo 4 solves the challenges of **Massive Throughput** and **Geometric Standardization**.
+
+### 🛠️ Key Architectural Innovations
+
+#### 1. The Normalization Shield ([-1, 1] Mapping)
+Unlike previous versions, Demo 4 implements a mandatory internal mapping to a unit hyper-cube. 
+* **Stability:** Prevents floating-point errors and matrix ill-conditioning in high-dimensional spaces (50D+).
+* **Relative Epsilon Consistency:** By normalizing to a fixed range, the `Epsilon` parameter (e.g., 0.05) consistently represents a **2.5% structural tolerance** regardless of the raw data's original magnitude (e.g., micro-volts vs. mega-watts).
+
+#### 2. Dual-Mode Structural Logic
+The engine now features a toggleable philosophical approach to reality fractures:
+* **MODE 1: DIVERSITY (The Sprinter):** Maintains point continuity between sectors. Optimized for high-speed fluid data streams (~400,000 ops/sec).
+* **MODE 2: PURITY (The Philosopher):** Resets the sector buffer upon fracture detection. Optimized for high-integrity legal isolation and clean mathematical boundaries.
+
+### 📊 Benchmark Results (1,000,000 Points | 50D)
+
+| Metric | Mode 1 (Diversity) | Mode 2 (Purity) |
+| :--- | :--- | :--- |
+| **Throughput** | ~395,000 pts/sec | ~16,000 pts/sec |
+| **Compression** | ~15-20% (Noise) | ~50%+ (Fractures) |
+| **Stability** | High | Ultra-High |
+| **RAM Usage** | Constant (Chunked) | Constant (Chunked) |
+
+### 🧠 Research Conclusion
+By decoupling the **Real-World Scale** from the **Geometric Core**, SLRM-nD achieves "Scale Agnosticism." This ensures that the synthesized knowledge map (`MASTER_MAP_D4.csv`) remains a mathematically perfect representation of the underlying law, ready for ultra-fast vectorized inference in Demo 5.
+
+---
+*Note: All tests were performed in a Google Colab environment using vectorized NumPy operations for data generation and LuminOrigin v1.4 for synthesis.*
+
 **Note:** These demos are optimized for both Google Colab and local environments. For deep technical insights into the v1.4 C kernel, refer to the core documentation in the root folder.

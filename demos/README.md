@@ -71,7 +71,7 @@ Real-world data is rarely perfectly linear. This demo shows how the engine "carv
   ```
 ---
 
-# 🚀 Demo 004: Industrial Scale & Range Resilience (1M Points)
+## 🚀 Demo 004: Industrial Scale & Range Resilience (1M Points)
 
 This laboratory focuses on the structural maturation of the **LuminOrigin** engine, moving from basic prototyping to industrial-grade data synthesis. Demo 4 solves the challenges of **Massive Throughput** and **Geometric Standardization**.
 

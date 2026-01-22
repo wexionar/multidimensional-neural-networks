@@ -71,34 +71,39 @@ Real-world data is rarely perfectly linear. This demo shows how the engine "carv
   ```
 ---
 
-## 🚀 Demo 004: Industrial Scale & Range Resilience (1M Points)
+## 🚀 Demo 004: Symmetric Origin Engine (High-Speed Compression)
 
-This laboratory focuses on the structural maturation of the **LuminOrigin** engine, moving from basic prototyping to industrial-grade data synthesis. Demo 4 solves the challenges of **Massive Throughput** and **Geometric Standardization**.
+This laboratory marks the transition of the **Lumin-Origin** engine to industrial-grade standards, focusing on mathematical honesty and scale agnosticism.
 
-### 🛠️ Key Architectural Innovations
+### 🛠️ Architectural Breakthroughs
 
-#### 1. The Normalization Shield ([-1, 1] Mapping)
-Unlike previous versions, Demo 4 implements a mandatory internal mapping to a unit hyper-cube. 
-* **Stability:** Prevents floating-point errors and matrix ill-conditioning in high-dimensional spaces (50D+).
-* **Relative Epsilon Consistency:** By normalizing to a fixed range, the `Epsilon` parameter (e.g., 0.05) consistently represents a **2.5% structural tolerance** regardless of the raw data's original magnitude (e.g., micro-volts vs. mega-watts).
+#### 1. The Symmetric Normalization Shield (Max-Abs Mapping)
+By implementing **Symmetric Max-Absolute Scaling**, we keep the origin at `0.0`. This is a critical evolution from previous versions:
+* **Stability:** Prevents floating-point errors and matrix ill-conditioning in high-dimensional spaces.
+* **Integrity:** Preserves the geometric relationship between positive and negative values, ensuring that the "Relative Epsilon" (structural tolerance) remains consistent regardless of the raw data's magnitude.
 
-#### 2. Dual-Mode Structural Logic
-The engine now features a toggleable philosophical approach to reality fractures:
-* **MODE 1: DIVERSITY (The Sprinter):** Maintains point continuity between sectors. Optimized for high-speed fluid data streams (~400,000 ops/sec).
-* **MODE 2: PURITY (The Philosopher):** Resets the sector buffer upon fracture detection. Optimized for high-integrity legal isolation and clean mathematical boundaries.
+#### 2. Scale Metadata Header (Auto-Contained Maps)
+The output `.npy` file (binary format) now carries its own "DNA." The first row of the matrix is reserved for metadata:
+* **Key [0,0]:** Contains the `max_abs_y` factor.
+* **Utility:** This allows the **Resolution Engine** (Demo 005) to reconstruct reality without external configuration files, making the compressed knowledge map fully portable.
 
-### 📊 Benchmark Results (1,000,000 Points | 50D)
-
-| Metric | Mode 1 (Diversity) | Mode 2 (Purity) |
-| :--- | :--- | :--- |
-| **Throughput** | ~395,000 pts/sec | ~16,000 pts/sec |
-| **Compression** | ~15-20% (Noise) | ~50%+ (Fractures) |
-| **Stability** | High | Ultra-High |
-| **RAM Usage** | Constant (Chunked) | Constant (Chunked) |
+### 📊 Performance & Stability
+| Metric | Specification |
+| :--- | :--- |
+| **Normalization** | Symmetric Max-Abs ([-1, 1] Range) |
+| **Precision** | High-Fidelity Relative Epsilon |
+| **I/O Format** | Binary NumPy (.npy) |
+| **Compatibility** | Fully n-Dimensional (nD) |
 
 ### 🧠 Research Conclusion
-By decoupling the **Real-World Scale** from the **Geometric Core**, SLRM-nD achieves "Scale Agnosticism." This ensures that the synthesized knowledge map (`MASTER_MAP_D4.csv`) remains a mathematically perfect representation of the underlying law, ready for ultra-fast vectorized inference in Demo 5.
+By decoupling the **Real-World Scale** from the **Geometric Core**, SLRM-nD achieves "Scale Agnosticism." This ensures that the synthesized map remains a mathematically perfect representation of the underlying law, optimized for ultra-fast vectorized inference.
 
+### 🛠️ How to run
+* **Local Script:**
+  ```bash
+  python 004_lumin_origin.py
+  ```
+  
 ---
 *Note: All tests were performed in a Google Colab environment using vectorized NumPy operations for data generation and LuminOrigin v1.4 for synthesis.*
 

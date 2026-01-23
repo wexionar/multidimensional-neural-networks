@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.tree import DecisionTreeRegressor
 
 # =============================================================
-# CORE: SRLM-nD (Lumin Fusion 006)
+# CORE: SRLM-nD (Lumin Fusion Demo 006)
 # =============================================================
 class LuminOrigin:
     def __init__(self, epsilon_val=0.05, epsilon_type=1, mode_type=1):

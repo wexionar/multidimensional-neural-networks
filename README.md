@@ -14,6 +14,7 @@ SLRM-nD/
 ├── nexus_core.py           # Geometric Folding Engine (Part A)
 ├── nexus_memory.py         # Nexus Persistence Support (Annex A)
 ├── demos/                  # Benchmarks & 50D Stress Tests
+├── tests/                  # Benchmarks (SLRM-nD vs Others)
 ├── .es/                    # Spanish lab & documentation
 ├── LICENSE                 # MIT License
 └── README.md               # Main Documentation
@@ -230,6 +231,7 @@ The true power of SLRM-nD lies in the direct communication between **Origin** an
 
 ### Experimental Lab
 * `/demos`: Ready-to-run benchmarks (Python & Jupyter Notebooks) showcasing SLRM-nD vs. the Curse of Dimensionality.
+* `/tests`: Scientific validation suite and comparative benchmarks (SRLM-nD vs. Other Algorithms).
 * `.es`: Spanish documentation and development laboratory.
 
 ---

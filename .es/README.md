@@ -14,6 +14,7 @@ SLRM-nD/
 ├── nexus_core.py           # Motor de Plegado Geométrico (Parte A)
 ├── nexus_memory.py         # Soporte de Persistencia Nexus (Anexo A)
 ├── demos/                  # Benchmarks y Pruebas de Estrés 50D
+├── tests/                  # Benchmarks Comparativos (SRLM-nD vs Otros)
 ├── .es/                    # Laboratorio y documentación en español
 ├── LICENSE                 # Licencia MIT
 └── README.md               # Documentación Principal
@@ -230,6 +231,7 @@ El verdadero poder de SLRM-nD reside en la comunicación directa entre **Origin*
 
 ### Laboratorio Experimental
 * `/demos`: Benchmarks listos para ejecutar (Python y Jupyter Notebooks) que muestran SLRM-nD frente a la Maldición de la Dimensionalidad.
+* `/tests`: Suite de validación científica y benchmarks comparativos (SRLM-nD vs. Otros Algoritmos).
 * `.es`: Documentación en español y laboratorio de desarrollo.
 
 ---

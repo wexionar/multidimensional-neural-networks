@@ -153,6 +153,48 @@ This engine proves that **SLRM-nD** is not just a theoretical model but a produc
   python 005_lumin_resolution.py
   ```
 ---
+
+## 🚀 Demo 006: Lumin Fusion (Integrated Engine)
+
+The most advanced iteration of the **Lumin Core**. Demo 006 unifies the Synthesis (Origin) and Inference (Resolution) engines into a single, seamless pipeline designed for real-world benchmarking and high-performance experimentation.
+
+### 🛠️ Strategic Enhancements
+
+#### 1. Unified Fusion Pipeline
+Demo 006 eliminates the gap between learning and resolving. It allows for immediate verification of the synthesized map's fidelity by running a **Stress Test** instantly after the ingestion phase, ensuring the structural laws are perfectly captured.
+
+#### 2. Persistence & Cache Management
+To optimize developer workflow, the engine introduces a **Session Persistence Layer**:
+* **Memory Cache:** Re-use massive datasets across different engine configurations (changing Epsilon or Normalization) without the overhead of re-loading or re-generating data.
+* **Session Token:** Every execution is tagged with a unique hex-token for precise tracking of reports and binary exports.
+
+#### 3. Real-Time Ignition Reports
+The engine provides a high-fidelity dashboard after each "Ignition" (Synthesis process), delivering critical metrics:
+* **Structural Synthesis:** Direct visualization of the compression ratio and sector count.
+* **Mathematical Fidelity:** Real-time calculation of MAE (Mean Absolute Error) and Global Fidelity percentage.
+* **Hardware Performance:** Throughput metrics (points/sec) and operational latency.
+
+#### 4. Dual-Normalization Shield
+Supports both **Symmetric [-1, 1]** and **Direct [0, 1]** mapping, allowing the user to adapt the engine's geometric sensitivity based on the data's topology.
+
+### 📊 Performance Metrics (Fusion v006)
+| Metric | Specification |
+| :--- | :--- |
+| **Engine State** | Fully Integrated (Origin + Resolution) |
+| **Learning Speed** | Optimized single-pass ingestion |
+| **Resolution** | 100% Vectorized Matrix Operations |
+| **Data Integrity** | DNA-Synchronized with persistent cache |
+| **Export Format** | Version-stamped Binary Map (.npy) |
+
+### 🧠 Why this matters
+**Lumin Fusion 006** is the definitive tool for researchers. It allows for the rapid "tuning" of the Epsilon-to-Synthesis ratio, making it easy to find the perfect balance between model simplicity and mathematical precision. It is the core engine used for the official **SRLM-nD Benchmarks**.
+
+### 🛠️ How to run
+* **Local Script:**
+  ```bash
+  python 006_lumin_fusion.py
+  ```
+---
 *Note: All tests were performed in a Google Colab environment using vectorized NumPy operations for data generation and LuminOrigin v1.4 for synthesis.*
 
 **Note:** These demos are optimized for both Google Colab and local environments. For deep technical insights into the v1.4 C kernel, refer to the core documentation in the root folder.

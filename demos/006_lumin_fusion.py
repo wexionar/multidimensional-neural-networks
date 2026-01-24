@@ -1,11 +1,11 @@
 # =============================================================
 # LUMIN-DEMO 006: The Integrated Fusion Engine (Symmetry & Precision)
 # =============================================================
-# Project: SRLM-nD (Lumin Core)
+# Project: SLRM-nD (Lumin Core)
 # Developers: Alex Kinetic & Gemini
 # Repository: https://github.com/wexionar/multi-dimensional-neural-networks
 # License: MIT License
-# Date: 2026-01-23
+# Date: 2026-01-24
 # Description: Advanced unified engine for ingestion and
 #              high-speed vectorized resolution. Synchronized
 #              multi-dimensional sectors for real-world
@@ -104,7 +104,7 @@ class LuminResolution:
 # =============================================================
 # FLOW CONTROL: LUMIN FUSION 006
 # =============================================================
-def iniciar_fusion_006():
+def start_fusion_006():
     session_token = secrets.token_hex(4).upper()
     cache_data = None  # <-- PERSISTENCE
 
@@ -119,29 +119,29 @@ def iniciar_fusion_006():
                 print(f" 3: Re-use dataset in memory ({len(cache_data):,} pts)")
             print(" 0: Exit\n" + "─"*45)
 
-            modo = input("Select option: ").strip() or "1"
-            if modo == "0": return
+            mode_select = input("Select option: ").strip() or "1"
+            if mode_select == "0": return
 
-            if modo == "1":
+            if mode_select == "1":
                 sug = "10000, 50, 100, 2"
                 print("\n📝 CONFIGURATION: Points, Dims, Range, Type(1:Pos/2:Both)")
-                u_data = input(f">> [Enter for {sug}]: ").strip() or sug
+                user_params = input(f">> [Enter for {sug}]: ").strip() or sug
                 try:
-                    p = [float(x.strip()) for x in u_data.split(",")]
-                    N, D, R_MAX, TIPO = int(p[0]), int(p[1]), p[2], int(p[3])
-                    X = np.random.uniform(-R_MAX, R_MAX, (N, D)) if TIPO == 2 else np.random.uniform(0, R_MAX, (N, D))
+                    params = [float(x.strip()) for x in user_params.split(",")]
+                    N, D, R_MAX, DATA_TYPE = int(params[0]), int(params[1]), params[2], int(params[3])
+                    X = np.random.uniform(-R_MAX, R_MAX, (N, D)) if DATA_TYPE == 2 else np.random.uniform(0, R_MAX, (N, D))
                     Y = (np.sum(X, axis=1) / D) + np.random.normal(0, 0.01, N)
                     raw_data = np.hstack([X, Y.reshape(-1, 1)])
                     cache_data = raw_data # Save
                 except Exception as e: print(f"❌ Error: {e}")
-            elif modo == "2":
+            elif mode_select == "2":
                 if not IN_COLAB: print("⚠️ Colab environment required."); continue
                 uploaded = files.upload()
                 if not uploaded: continue
                 df = pd.read_csv(io.BytesIO(uploaded[list(uploaded.keys())[0]]))
                 raw_data = df.to_numpy()
                 cache_data = raw_data # Save
-            elif modo == "3" and cache_data is not None:
+            elif mode_select == "3" and cache_data is not None:
                 raw_data = cache_data
 
         # --- 2. ENGINE CONFIGURATION ---
@@ -150,8 +150,8 @@ def iniciar_fusion_006():
         cfg_sug = "1, 1, 0.05, 1"
         cfg_data = input(f">> [Enter for {cfg_sug}]: ").strip() or cfg_sug
         try:
-            c = [float(x.strip()) for x in cfg_data.split(",")]
-            n_type, e_type, e_val, m_type = int(c[0]), int(c[1]), c[2], int(c[3])
+            config = [float(x.strip()) for x in cfg_data.split(",")]
+            n_type, e_type, e_val, m_type = int(config[0]), int(config[1]), config[2], int(config[3])
         except:
             n_type, e_type, e_val, m_type = 1, 1, 0.05, 1
 
@@ -162,10 +162,10 @@ def iniciar_fusion_006():
 
         if n_type == 1:
             data_norm = 2 * (raw_data - s_min) / s_range - 1
-            n_label = "SYMMETRIC [-1, 1]"
+            norm_label = "SYMMETRIC [-1, 1]"
         else:
             data_norm = (raw_data - s_min) / s_range
-            n_label = "DIRECT [0, 1]"
+            norm_label = "DIRECT [0, 1]"
 
         origin = LuminOrigin(epsilon_val=e_val, epsilon_type=e_type, mode_type=m_type)
         t_start = time.perf_counter()
@@ -190,13 +190,13 @@ def iniciar_fusion_006():
                 mae_val = np.mean(np.abs(data_norm[valid_mask, -1] - y_pred[valid_mask]))
                 fidelity = max(0, (1 - mae_val) * 100)
 
-        peso_estimado_bytes = num_sectors * (dims * 3 + 1) * 8
-        peso_str = f"{peso_estimado_bytes/1024:.2f} KB" if peso_estimado_bytes < 1024*1024 else f"{peso_estimado_bytes/(1024*1024):.2f} MB"
+        estimated_weight_bytes = num_sectors * (dims * 3 + 1) * 8
+        weight_str = f"{estimated_weight_bytes/1024:.2f} KB" if estimated_weight_bytes < 1024*1024 else f"{estimated_weight_bytes/(1024*1024):.2f} MB"
 
         print("\n📊 IGNITION REPORT: " + session_token)
         print("─"*45)
         print(f"• STRATEGY:      {origin.mode_label}")
-        print(f"• NORMALIZATION: {n_label}")
+        print(f"• NORMALIZATION: {norm_label}")
         print(f"• EPSILON:       {e_val} ({'RELATIVE %' if e_type == 2 else 'ABSOLUTE'})")
         print(f"• PRECISION:     {mae_val:.5f} MAE ({fidelity:.2f}% Fidelity)")
         print(f"• Y-RANGE:       [{s_min[-1]:,.2f} to {s_max[-1]:,.2f}]")
@@ -204,7 +204,7 @@ def iniciar_fusion_006():
         print(f"• PROCESSED:     {pts:,} points | {dims}D")
         print(f"• SECTORS:       {num_sectors} detected")
         print(f"• COMPRESSION:   {comp_ratio:.2f}%")
-        print(f"• MAP SIZE:      {peso_str}")
+        print(f"• MAP SIZE:      {weight_str}")
         print("─"*45)
         print(f"• LEARNING SPD:  {speed:,.2f} pts/sec")
         print(f"• THROUGHPUT:    {throughput:,.2f} ops/sec")
@@ -232,14 +232,23 @@ def iniciar_fusion_006():
         print(" 0: Exit (Without saving)")
         print("─"*45)
 
-        post = input(">> Select: ").strip() or "1"
-        if post == "1": continue
-        elif post == "2":
+        post_action = input(">> Select: ").strip() or "1"
+        if post_action == "1": continue
+        elif post_action == "2":
             filename = f"LUMIN_DATA_{session_token}.npy"
-            np.save(filename, {'sectors': sectors_list, 'token': session_token, 'dims': dims, 'norm_type': n_type, 's_min': s_min, 's_range': s_range})
+            np.save(filename, {
+                'sectors': sectors_list,
+                'token': session_token,
+                'dims': dims,
+                'norm_type': n_type,
+                's_min': s_min,
+                's_range': s_range,
+                'epsilon_type': e_type,
+                'epsilon_val': e_val
+            })
             print(f"\n✅ SAVED: {filename}")
             if IN_COLAB: files.download(filename)
             break
-        elif post == "0": break
+        elif post_action == "0": break
 
-iniciar_fusion_006()
+start_fusion_006()

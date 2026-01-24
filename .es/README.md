@@ -15,7 +15,6 @@ SLRM-nD/
 ├── nexus_memory.py         # Soporte de Persistencia Nexus (Anexo A)
 ├── demos/                  # Benchmarks y Pruebas de Estrés 50D
 ├── tests/                  # Benchmarks Comparativos (SRLM-nD vs Otros)
-├── .es/                    # Laboratorio y documentación en español
 ├── LICENSE                 # Licencia MIT
 └── README.md               # Documentación Principal
 ```
@@ -232,7 +231,6 @@ El verdadero poder de SLRM-nD reside en la comunicación directa entre **Origin*
 ### Laboratorio Experimental
 * `/demos`: Benchmarks listos para ejecutar (Python y Jupyter Notebooks) que muestran SLRM-nD frente a la Maldición de la Dimensionalidad.
 * `/tests`: Suite de validación científica y benchmarks comparativos (SRLM-nD vs. Otros Algoritmos).
-* `.es`: Documentación en español y laboratorio de desarrollo.
 
 ---
 
@@ -262,4 +260,18 @@ SLRM-nD es un marco teórico fundamental entregado a la comunidad de código abi
 
 ---
 
+## Retroalimentación
+
+**Test transparente:** El código open source permisivo personal ... ¿es un código valorado? El tiempo dirá ...
+
+* **TRX:** `TRc8nwBDaW8QMfT8AdsMkv8bfdYNbLgvcv` ([Ver QR](../.github/media/trx.png))
+* **BTC:** `bc1qdk5rdgum0caqrvz6uljk2jm7hxwzrkt259smzn` ([Ver QR](../.github/media/btc.png))
+* **ETH:** `0x9c59C80a1c1521f0ab22ACc911f4493E4E7538D7` ([Ver QR](../.github/media/eth.png))
+* **XLM:** `GCTFF5NQ7ZOD6IDNFUXB6QIRAKDZPHSLHVHV6V5TPDP2Q74DE3METPEC` ([Ver QR](../.github/media/xlm.png))
+
+"Mil intentos y un invento. Si el invento te sirve, ayuda a que el próximo intento sea posible."
+
+Muchas gracias por tu ayuda, ¡aquí todas las ayudas son valoradas!
+
+---
 *Desarrollado para la comunidad global de desarrolladores. Cerrando la brecha entre la lógica geométrica y las Redes Neuronales multidimensionales. Parte de la iniciativa del Proyecto Prometeo.*

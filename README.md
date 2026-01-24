@@ -15,7 +15,6 @@ SLRM-nD/
 ├── nexus_memory.py         # Nexus Persistence Support (Annex A)
 ├── demos/                  # Benchmarks & 50D Stress Tests
 ├── tests/                  # Benchmarks (SLRM-nD vs Others)
-├── .es/                    # Spanish lab & documentation
 ├── LICENSE                 # MIT License
 └── README.md               # Main Documentation
 ```
@@ -232,7 +231,6 @@ The true power of SLRM-nD lies in the direct communication between **Origin** an
 ### Experimental Lab
 * `/demos`: Ready-to-run benchmarks (Python & Jupyter Notebooks) showcasing SLRM-nD vs. the Curse of Dimensionality.
 * `/tests`: Scientific validation suite and comparative benchmarks (SRLM-nD vs. Other Algorithms).
-* `.es`: Spanish documentation and development laboratory.
 
 ---
 
@@ -262,5 +260,18 @@ SLRM-nD is a fundamental theoretical framework delivered to the open-source comm
 
 ---
 
-*Developed for the global developer community. Bridging the gap between geometric logic and high-dimensional Neural Networks. Part of the Prometheus Project initiative.*
+## Feedback
 
+**Transparency Test:** Personal and permissive open-source code... is it truly valued? Time will tell...
+
+* **TRX:** `TRc8nwBDaW8QMfT8AdsMkv8bfdYNbLgvcv` ([View QR](.github/media/trx.png))
+* **BTC:** `bc1qdk5rdgum0caqrvz6uljk2jm7hxwzrkt259smzn` ([View QR](.github/media/btc.png))
+* **ETH:** `0x9c59C80a1c1521f0ab22ACc911f4493E4E7538D7` ([View QR](.github/media/eth.png))
+* **XLM:** `GCTFF5NQ7ZOD6IDNFUXB6QIRAKDZPHSLHVHV6V5TPDP2Q74DE3METPEC` ([View QR](.github/media/xlm.png))
+
+"A thousand attempts for one invention. If the invention serves you, help make the next attempt possible."
+
+Thank you very much for your support; here, every contribution is valued!
+
+---
+*Developed for the global developer community. Bridging the gap between geometric logic and high-dimensional Neural Networks. Part of the Prometheus Project initiative.*

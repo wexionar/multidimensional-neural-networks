@@ -193,4 +193,4 @@ Supports both **Symmetric [-1, 1]** and **Direct [0, 1]** mapping, allowing the 
   python demo_006_lumin_fusion.py
   ```
 ---
-**Note:** All tests were performed in a Google Colab environment using vectorized NumPy operations for data generation and LuminOrigin v1.4 for synthesis.
+**Note:** All tests were performed in a Google Colab environment using vectorized NumPy operations for data generation and Lumin-Origin v1.4 for synthesis.

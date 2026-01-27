@@ -22,12 +22,10 @@ This is our flagship benchmark. It challenges the compiler to synthesize a 50-di
 Traditional neural networks often struggle with the "Curse of Dimensionality," leading to data fragmentation. **Lumin-Synthesis** uses deductive geometry to find the optimal axis pivot, allowing it to "see" the underlying law through the noise and unify the dataset without losing precision.
 
 ### 🛠️ How to run
-* **Interactive:** Open `demo_001_stress_test_50D.ipynb` in Google Colab for a zero-installation experience.
-* **Local Script:** Ensure you have `numpy` and `pandas` installed:
+* **Local Script:**
   ```bash
   python demo_001_stress_test_50D.py
   ```
-
 ---
 
 ## 🚀 Demo 002: Non-Linearity & Integrity Check (20D)
@@ -195,6 +193,4 @@ Supports both **Symmetric [-1, 1]** and **Direct [0, 1]** mapping, allowing the 
   python demo_006_lumin_fusion.py
   ```
 ---
-*Note: All tests were performed in a Google Colab environment using vectorized NumPy operations for data generation and LuminOrigin v1.4 for synthesis.*
-
-**Note:** These demos are optimized for both Google Colab and local environments. For deep technical insights into the v1.4 C kernel, refer to the core documentation in the root folder.
+**Note:** All tests were performed in a Google Colab environment using vectorized NumPy operations for data generation and LuminOrigin v1.4 for synthesis.
